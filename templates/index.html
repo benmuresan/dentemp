@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block bodyblock %}
+
+    <body class="landing">
+
+    <!-- Banner -->
+    <section id="banner">
+        <h2>Dentemp</h2>
+
+        <p>Connecting dental offices with professional temporary dental employees.</p>
+        <ul class="actions">
+            <li><a href="/create_office/" class="button">Office Sign Up</a></li>
+            {#            <li><a href="#" class="button special">Office Sign Up</a></li>#}
+            <li><a href="/create_user/" class="button">Employee Sign Up</a></li>
+            <li><a href="/log_in/" class="button special">Log In</a></li>
+        </ul>
+    </section>
+
+    <!-- Main -->
+    <section id="main" class="container">
+
+        <section class="box special">
+            <header class="major">
+                <h2>Welcome to the most convenient
+                    <br/>
+                    way to find a temporary dental hygienist or assistant</h2>
+
+                <p>See who is available and when. Select the right professional for your office.</p>
+            </header>
+            {#            <span class="image featured"><img src="{% static "images/pic01.jpg" %}"></span>#}
+        </section>
+
+        <section class="box special features">
+            <div class="features-row">
+                <section>
+                    <span class="icon major fa-bolt accent2"></span>
+
+                    <h3>Employees now</h3>
+
+                    <p>Whether you need an employee immediately or someone in the future, Dentemp will help you find
+                        the right professional.</p>
+                </section>
+                <section>
+                    <span class="icon major fa-lock accent5"></span>
+
+                    <h3>One low fee</h3>
+
+                    <p>Pay only when you use the service. One low fee for dental hygienists, or assistants.</p>
+                </section>
+            </div>
+            {#            <div class="features-row">#}
+            {#                <section>#}
+            {#                    <span class="icon major fa-cloud accent4"></span>#}
+            {##}
+            {#                    <h3>Sed feugiat</h3>#}
+            {##}
+            {#                    <p>Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum#}
+            {#                        phasellus iaculis accumsan dolore magna aliquam veroeros.</p>#}
+            {#                </section>#}
+            {#                <section>#}
+            {#                    <span class="icon major fa-lock accent5"></span>#}
+            {##}
+            {#                    <h3>Enim phasellus</h3>#}
+            {##}
+            {#                    <p>Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum#}
+            {#                        phasellus iaculis accumsan dolore magna aliquam veroeros.</p>#}
+            {#                </section>#}
+            {#            </div>#}
+        </section>
+
+        {#        <div class="row">#}
+        {#            <div class="6u 12u(narrower)">#}
+        {##}
+        {#                <section class="box special">#}
+        {#                    <span class="image featured"><img src="{% static "images/pic02.jpg" %}"></span>#}
+        {##}
+        {#                    <h3>Sed lorem adipiscing</h3>#}
+        {##}
+        {#                    <p>Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum#}
+        {#                        phasellus iaculis accumsan dolore magna aliquam veroeros.</p>#}
+        {#                    <ul class="actions">#}
+        {#                        <li><a href="#" class="button alt">Learn More</a></li>#}
+        {#                    </ul>#}
+        {#                </section>#}
+        {##}
+        {#            </div>#}
+        {#            <div class="6u 12u(narrower)">#}
+        {##}
+        {#                <section class="box special">#}
+        {#                    <span class="image featured"><img src="{% static "images/pic03.jpg" %}"></span>#}
+        {##}
+        {#                    <h3>Accumsan integer</h3>#}
+        {##}
+        {#                    <p>Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum#}
+        {#                        phasellus iaculis accumsan dolore magna aliquam veroeros.</p>#}
+        {#                    <ul class="actions">#}
+        {#                        <li><a href="#" class="button alt">Learn More</a></li>#}
+        {#                    </ul>#}
+        {#                </section>#}
+        {##}
+        {#            </div>#}
+        {#        </div>#}
+
+    </section>
+
+    <!-- CTA -->
+    {#    <section id="cta">#}
+    {##}
+    {#        <h2>Sign up for beta access</h2>#}
+    {##}
+    {#        <p>Service will begin very soon.  Sign up now.</p>#}
+    {##}
+    {#        <form>#}
+    {#            <div class="row uniform 50%">#}
+    {#                <div class="8u 12u(mobilep)">#}
+    {#                    <input type="email" name="email" id="email" placeholder="Email Address"/>#}
+    {#                </div>#}
+    {#                <div class="4u 12u(mobilep)">#}
+    {#                    <input type="submit" value="Sign Up" class="fit"/>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </form>#}
+    {##}
+    {#    </section>#}
+
+{% endblock %}

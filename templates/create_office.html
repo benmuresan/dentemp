@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block bodyblock %}
+
+
+    <!-- Main -->
+    <section id="main" class="container">
+        <header>
+            <h2>Please create a new dental office account.</h2>
+        </header>
+        <div class="row">
+            <div class="12u">
+
+                <!-- Form -->
+                {#                <section class="box">#}
+                {#                    <h3>What type of dental professional are you?</h3>#}
+                {##}
+                {#                    <form method="post" action="#">#}
+                {#                        <div class="row uniform 50%">#}
+                {#                            <div class="4u 12u(narrower)">#}
+                {#                                <input type="radio" id="user_assistant" name="type">#}
+                {#                                <label for="user_assistant">Dental Assistant</label>#}
+                {#                            </div>#}
+                {#                            <div class="4u 12u(narrower)">#}
+                {#                                <input type="radio" id="user_hygienist" name="type">#}
+                {#                                <label for="user_hygienist">Dental Hygienist</label>#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                    </form>#}
+                {#                </section>#}
+
+                <section class="box">
+
+                    <form method="post">
+                        <div class="row uniform 50%">
+                            <div class="6u 12u(mobilep)">
+                                <input type="text" name="username" id="name" value="" placeholder="Username"/>
+                            </div>
+                            <div class="6u 12u(mobilep)">
+                                <input type="password" name="password" id="password" value=""
+                                       placeholder="Enter Password"/>
+                            </div>
+                        </div>
+                        {% csrf_token %}
+                        <div class="row uniform 50%">
+                            <div class="3u 12u(mobilep)">
+                                <input type="submit" value="Submit" class="fit"/>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </section>
+{% endblock %}
