@@ -16,5 +16,7 @@ urlpatterns = patterns('',
                        url(r'^new_office/', "dentemp_site.views.new_office", name='new_office'),
                        url(r'^create_user/', "dentemp_site.views.create_user", name='create_user'),
                        url(r'^create_office/', "dentemp_site.views.create_office", name='create_office'),
+                       url(r'^account_disabled/', "dentemp_site.views.account_disabled", name='account_disabled'),
+                       url(r'^incorrect_login/', "dentemp_site.views.incorrect_login", name='incorrect_login'),
                        url(r'^', "dentemp_site.views.index", name='index'),
 )

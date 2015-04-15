@@ -8,12 +8,6 @@ staticfiles
 %
 }
 
-/*
-	Alpha by HTML5 UP
-	html5up.net | @n33co
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-*/
-
 /* Basic */
 
 body {
@@ -231,6 +225,8 @@ label {
 input[type="text"],
 input[type="password"],
 input[type="email"],
+input[type="tel"],
+input[type="url"],
 select,
 textarea {
     -moz-appearance: none;
@@ -252,6 +248,8 @@ textarea {
 input[type="text"]:invalid,
 input[type="password"]:invalid,
 input[type="email"]:invalid,
+input[type="tel"]:invalid,
+input[type="url"]:invalid,
 select:invalid,
 textarea:invalid {
     box-shadow: none;
@@ -260,6 +258,8 @@ textarea:invalid {
 input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="email"]:focus,
+input[type="tel"]:focus,
+input[type="url"]:focus,
 select:focus,
 textarea:focus {
     border-color: #e89980;
@@ -302,6 +302,8 @@ textarea:focus {
 input[type="text"],
 input[type="password"],
 input[type="email"],
+input[type="tel"],
+input[type="url"],
 select {
     height: 3em;
 }
