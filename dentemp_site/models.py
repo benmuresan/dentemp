@@ -1,26 +1,32 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.dateformat import format
 
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, primary_key=True)
     first_name = models.CharField(max_length=128)
     last_name = models.CharField(max_length=128)
-    license = models.CharField(max_length=128)
-    picture = models.ImageField(upload_to='profile_images', blank=True)
+    license = models.CharField(max_length=128, blank=True, null=True)
+    picture = models.ImageField(upload_to='profile_images', blank=True, null=True)
     email = models.CharField(max_length=128)
-    website = models.URLField(blank=True)
-    address = models.CharField(max_length=128)
+    website = models.URLField(blank=True, null=True)
+    street_address = models.CharField(max_length=128)
+    city = models.CharField(max_length=128)
+    state = models.CharField(max_length=128)
+    zip = models.CharField(max_length=128)
     times_hired = models.IntegerField(default=0)
     employee_type = models.CharField(max_length=128)
     employee_rate = models.FloatField(default=0)
     times_worked = models.IntegerField(default=0)
     employee_rating = models.IntegerField(default=0)
     about_me_comments = models.CharField(max_length=255)
-    skills = models.CharField(max_length=255)
+    anesthesia = models.CharField(max_length=255, blank=True, null=True)
+    nitrous = models.CharField(max_length=255, blank=True, null=True)
+    restorative = models.CharField(max_length=255, blank=True, null=True)
 
-    # def __unicode__(self):
-    # return self.email
+    def __unicode__(self):
+        return self.email
 
 
 class OfficeProfile(models.Model):
@@ -29,7 +35,10 @@ class OfficeProfile(models.Model):
     website = models.URLField(blank=True)
     logo = models.ImageField(upload_to='profile_images', blank=True)
     email = models.CharField(max_length=128)
-    address = models.CharField(max_length=128)
+    street_address = models.CharField(max_length=128)
+    city = models.CharField(max_length=128)
+    state = models.CharField(max_length=128)
+    zip = models.CharField(max_length=128)
     has_hired = models.IntegerField(default=0)
     employees_hired = models.CharField(max_length=10000)
     dates_needed = models.DateField()
@@ -55,6 +64,8 @@ class EventProfile(models.Model):
 
 
 class DateAvailable(models.Model):
-    employee_available = models.ForeignKey(UserProfile)
+    employee_available = models.ForeignKey(User)
     date = models.DateField(default=0)
 
+    def __unicode__(self):
+        return format(self.date, 'U')

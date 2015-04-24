@@ -18,6 +18,7 @@
                 <section class="box">
 
                     <form method="post" action="#">
+
                         <div class="row uniform 50%">
                             <div class="6u 12u(mobilep)">
                                 <input type="text" name="first_name" id="name" value="" placeholder="First Name"/>
@@ -29,7 +30,7 @@
                                 <input type="text" name="license" id="license" value="" placeholder="License Number"/>
                             </div>
                             <div class="6u 12u(mobilep)">
-                                <input type="email" name="email" id="email" value="" placeholder="Email"/>
+                                <input type="email" name="email" id="email" value="{{ user.email }}"/>
                             </div>
                             <div class="6u 12u(mobilep)">
                                 <input type="tel" name="phone_number" id="phone_number" value=""
@@ -44,11 +45,11 @@
                                        placeholder="Street Address"/>
                             </div>
                             <div class="6u 12u(mobilep)">
-                                <input type="text" name="city" id="phone_number" value="" placeholder="City"/>
+                                <input type="text" name="city" id="city" value="" placeholder="City"/>
                             </div>
 
                             <div class="6u 12u(mobilep)">
-                                <input type="text" name="state" id="phone_number" value="" placeholder="State"/>
+                                <input type="text" name="state" id="state" value="" placeholder="State"/>
                             </div>
                             <div class="6u 12u(mobilep)">
                                 <input type="text" name="zip" id="zip" value="" placeholder="Zip Code"/>
@@ -56,26 +57,29 @@
                             <br/>
 
                             <div class="6u 12u(mobilep)">
-                                <input type="url" name="website" id="url" value="" placeholder="Website Address"/>
+                                <input type="url" name="website" id="url" value="" placeholder="Website Address (If applicable)"/>
                             </div>
                         </div>
 
-                        {#                        <section class="box">#}
                         <hr/>
                         <h3>What skills do you have?</h3>
 
                         <div class="row uniform 50%">
                             <div class="4u 12u(narrower)">
-                                <input type="checkbox" id="anesthesia" name="anesthesia" value="">
-                                <label for="user_assistant">Anesthesia</label>
+                                <input type="checkbox" id="anesthesia" name="anesthesia" value="anesthesia">
+                                <label for="anesthesia">Anesthesia</label>
                             </div>
                             <div class="4u 12u(narrower)">
-                                <input type="checkbox" id="nitrous" name="nitrous" value="">
-                                <label for="user_hygienist">Nitrous</label>
+                                <input type="checkbox" id="nitrous" name="nitrous" value="nitrous">
+                                <label for="nitrous">Nitrous</label>
+                            </div>
+                            <div class="4u 12u(narrower)">
+                                <input type="checkbox" id="restorative" name="restorative" value="restorative">
+                                <label for="restorative">Restorative</label>
                             </div>
                         </div>
                         <hr/>
-
+                        {% csrf_token %}
                         <div class="row uniform">
                             <div class="12u">
                                 <ul class="actions">
