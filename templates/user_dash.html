@@ -89,8 +89,13 @@
 <div ng-app="myApp">
 <div ng-controller="demoController">
 <multiple-date-picker sunday-first-day="true" days-selected="{{ days_selected|safe }}" day-click="dayClick"/></div>
+<form method="post" action="/add_date/">
+<input id="date_available" name="date_available"><input type="submit">
+{% csrf_token %}
+</form>
 </div>
 </section>
 </section>
+
 
 {% endblock %}

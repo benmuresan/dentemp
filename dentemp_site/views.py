@@ -2,9 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from models import UserProfile, DateAvailable
 from django.contrib.auth import logout, login, authenticate
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 import json
+import time
+from datetime import date
 
 
 def index(request):
@@ -126,6 +129,25 @@ def create_office(request):
 def elements(request):
     return render(request,
                   "elements.html")
+
+@csrf_exempt
+def add_date(request):
+    if request.POST:
+        date_available = DateAvailable()
+        d = request.POST["date_available"]
+        da = date.fromtimestamp(int(d) / 1000)
+        date_available.date = da
+        date_available.employee_available = request.user
+        date_available.save()
+    return HttpResponse("Success")
+
+
+def pick_user(request):
+    r = time.strftime("%Y-%m-%d", time.localtime(int("1430092800")))
+    employees = DateAvailable.objects.filter(date=r)
+    for x in employees:
+        print x.employee_available.last_name, x.date
+    return render(request, "")
 
 
 @login_required
