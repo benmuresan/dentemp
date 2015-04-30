@@ -16,6 +16,7 @@
 
                 <section class="box">
                     <h3>Days Scheduled</h3>
+                    <p>You currently have {{ number_of_events }} days scheduled.</p>
                     <div class="table-wrapper">
                         <table>
                             <thead>
@@ -50,12 +51,13 @@
             <div class="6u 12u(mobilep)">
                 <section class="box">
                     <h3>Days Available</h3>
+                    <p>You are currently available for {{ days_available }} days.<a href="#user_calendar" class=""> Add More</a></p>
 
                     <div class="table-wrapper">
                         <table>
                             <thead>
                             <tr>
-                                <th> .</th>
+{#                                <th> .</th>#}
                                 <th></th>
                                 <th></th>
                             </tr>
@@ -89,10 +91,10 @@
 <div ng-app="myApp">
 <div ng-controller="demoController">
 <multiple-date-picker sunday-first-day="true" days-selected="{{ days_selected|safe }}" day-click="dayClick"/></div>
-<form method="post" action="/add_date/">
-<input id="date_available" name="date_available"><input type="submit">
-{% csrf_token %}
-</form>
+{#<form method="post" action="/add_date/">#}
+{#<input id="date_available" name="date_available"><input type="submit">#}
+{#{% csrf_token %}#}
+{#</form>#}
 </div>
 </section>
 </section>

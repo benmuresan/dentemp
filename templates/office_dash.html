@@ -1,91 +1,62 @@
-{% extends "user_base.html" %}
+{% extends "office_user_base.html" %}
 {% load staticfiles %}
 {% block bodyblock %}
 
     <!-- Main -->
     <section id="main" class="container">
         <header>
-            <h2>Welcome {{ user.username }}!</h2>
-
-            <p><a href="/office_calander/" class="">See your calander</a></p>
+            <h2>Welcome {{ user.office_name }}!</h2>
         </header>
 
-        <!-- Form -->
+        <section class="container">
+            <div class="box">
+                <h3>You currently have {{ number_of_events }} events posted.</h3>
+            </div>
+
+        </section>
+{#    </section>#}
+{#    <section class="container 75%">#}
         <div class="row">
             <div class="6u 12u(mobilep)">
+                <form method="post">
 
-                <section class="box">
-                    <h3>Jobs posted</h3>
-                    <div class="table-wrapper">
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Office</th>
-                                <th>Rate</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>Something</td>
-                                <td>Ante turpis integer aliquet porttitor.</td>
-                                <td>29.99</td>
-                            </tr>
-                            <tr>
-                                <td>Nothing</td>
-                                <td>Vis ac commodo adipiscing arcu aliquet.</td>
-                                <td>19.99</td>
-                            </tr>
-                            <tr>
-                                <td>Something</td>
-                                <td> Morbi faucibus arcu accumsan lorem.</td>
-                                <td>29.99</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
+                    <!-- Form -->
+                    <section class="box">
+                        <h4>What type of dental professional do you need?</h4>
+
+                        <div class="row uniform 50%">
+                            <div class="4u 12u(narrower)">
+                                <input type="radio" id="user_assistant" name="type" value="assistant">
+                                <label for="user_assistant">Dental Assistant</label>
+                            </div>
+                            <div class="4u 12u(narrower)">
+                                <input type="radio" id="user_hygienist" name="type" value="hygienist">
+                                <label for="user_hygienist">Dental Hygienist</label>
+                            </div>
+                        </div>
+                    </section>
+                </form>
             </div>
 
             <div class="6u 12u(mobilep)">
                 <section class="box">
-                    <h3>Days Available</h3>
-
-                    <div class="table-wrapper">
-                        <table>
-                            <thead>
-                            <tr>
-                                <th> .</th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>Something</td>
-                                <td>Ante turpis integer aliquet porttitor.</td>
-                                <td>29.99</td>
-                            </tr>
-                            <tr>
-                                <td>Nothing</td>
-                                <td>Vis ac commodo adipiscing arcu aliquet.</td>
-                                <td>19.99</td>
-                            </tr>
-                            <tr>
-                                <td>Something</td>
-                                <td> Morbi faucibus arcu accumsan lorem.</td>
-                                <td>29.99</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    {#                            <div class="row uniform 50%">#}
+                    {#                                <div class="4u 12u(narrower)">#}
+                    {#                                    <section class="box">#}
+                    <div ng-app="myApp">
+                        <div ng-controller="demoController">
+                            <multiple-date-picker sunday-first-day="true"
+                                                  days-selected="{{ days_selected|safe }}"
+                                                  day-click="dayClick"/>
+                        </div>
+                        {#<form method="post" action="/add_date/">#}
+                        {#<input id="date_available" name="date_available"><input type="submit">#}
+                        {#{% csrf_token %}#}
+                        {#</form>#}
                     </div>
                 </section>
             </div>
         </div>
     </section>
 
-
-    <section class="box">
-        Calender Goes Here!
-    </section>
 {% endblock %}

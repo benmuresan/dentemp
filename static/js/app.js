@@ -2,19 +2,29 @@ var app = angular.module('myApp', ['multipleDatePicker']);
 
 app.controller('demoController', ['$scope', function ($scope) {
     $scope.dayClick = function (time, selected) {
-        console.log(time.timeStamp);
-        console.log(selected);
+        console.log(selected.valueOf());
+        console.log(selected.selected);
         var formData = new FormData();
-        formData.append("date_available", time.timeStamp);
+        formData.append("date_available", selected.valueOf());
+        console.log (formData)
 
         var request = new XMLHttpRequest();
         console.log(formData)
-        request.open("POST", "/add_date/");
+        if(!selected.selected){
+            console.log("is selected")
+            request.open("POST", "/add_date/");
+
+        }
+        else{
+            console.log("is not selected")
+            request.open("POST", "/remove_date/");
+        }
         request.send(formData);
 
 
         //alert(moment(time).format('YYYY-M-DD') + ' has been ' + (selected ? '' : 'un') + 'selected');
     };
+
 
     $scope.logMonthChanged = function (newMonth, oldMonth) {
         alert('new month : ' + newMonth.format('YYYY-M-DD') + ' || old month : ' + oldMonth.format('YYYY-M-DD'));

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from models import UserProfile, DateAvailable
+from models import UserProfile, DateAvailable, EventProfile, OfficeProfile
 from django.contrib.auth import logout, login, authenticate
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -65,8 +65,30 @@ def user_dash(request):
     for d in days_selected:
         date_list.append(str(d) + "000")
     output = "[" + ", ".join(date_list) + "]"
+    days_available = len(days_selected)
+    number_of_events = EventProfile.objects.filter(fulfilled_by=request.user)
+    num_events = len(number_of_events)
+    first_name = UserProfile.objects.filter(first_name=request.user)
+    last_name = UserProfile.objects.filter(last_name=request.user)
+
     return render(request,
-                  "user_dash.html", {"days_selected": output})
+                  "user_dash.html",
+                  {"days_selected": output,
+                   "days_available": days_available,
+                   "number_of_events": num_events,
+                   "first_name": first_name,
+                   "last_name": last_name})
+
+
+def office_dash(request):
+    number_of_events = EventProfile.objects.filter(office_created=request.user)
+    num_events = len(number_of_events)
+    office_name = OfficeProfile.objects.filter(office_name=request.user)
+
+    return render(request,
+                  "office_dash.html",
+                  {"number_of_events": num_events,
+                  "office_name": office_name})
 
 
 def new_office(request, id):
@@ -130,15 +152,34 @@ def elements(request):
     return render(request,
                   "elements.html")
 
+
 @csrf_exempt
 def add_date(request):
     if request.POST:
         date_available = DateAvailable()
         d = request.POST["date_available"]
+        print d
+        # da = date.fromtimestamp(int(d) / 1000)
         da = date.fromtimestamp(int(d) / 1000)
+        print da
         date_available.date = da
         date_available.employee_available = request.user
         date_available.save()
+    return HttpResponse("Success")
+
+
+@csrf_exempt
+def remove_date(request):
+    if request.POST:
+        d = request.POST["date_available"]
+        # print d
+        da = date.fromtimestamp(int(d) / 1000)
+        # print da
+        date_available = DateAvailable.objects.filter(employee_available=request.user, date=da)
+        print date_available
+        if len(date_available) < 1:
+            return HttpResponse("Not found.")
+        date_available[0].delete()
     return HttpResponse("Success")
 
 
@@ -160,11 +201,6 @@ def log_out(request):
 def generic(request):
     return render(request,
                   "generic.html")
-
-
-def office_dash(request):
-    return render(request,
-                  "office_dash.html")
 
 
 def account_disabled(request):
