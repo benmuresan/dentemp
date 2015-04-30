@@ -2,18 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="720a7588-3811-44be-a716-2766b1a8cfc8" name="Default" comment="Initial dentemp commit.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/office_user_base.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/app.js" afterPath="$PROJECT_DIR$/static/js/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/base.html" afterPath="$PROJECT_DIR$/templates/base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/contact.html" afterPath="$PROJECT_DIR$/templates/contact.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/index.html" afterPath="$PROJECT_DIR$/templates/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/office_dash.html" afterPath="$PROJECT_DIR$/templates/office_dash.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dentemp/urls.py" afterPath="$PROJECT_DIR$/dentemp/urls.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/new_office.html" afterPath="$PROJECT_DIR$/templates/new_office.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/office_user_base.html" afterPath="$PROJECT_DIR$/templates/office_user_base.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/user_base.html" afterPath="$PROJECT_DIR$/templates/user_base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/user_dash.html" afterPath="$PROJECT_DIR$/templates/user_dash.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dentemp_site/views.py" afterPath="$PROJECT_DIR$/dentemp_site/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="dentemp.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -89,21 +81,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="user_base.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="user_base.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/user_base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-12.5" vertical-offset="210" max-vertical-offset="960">
-              <caret line="34" column="101" selection-start-line="34" selection-start-column="101" selection-end-line="34" selection-end-column="101" />
+            <state vertical-scroll-proportion="0.2879747" vertical-offset="328" max-vertical-offset="960">
+              <caret line="34" column="45" selection-start-line="34" selection-start-column="45" selection-end-line="34" selection-end-column="45" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="office_user_base.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="office_user_base.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/office_user_base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.806962" vertical-offset="0" max-vertical-offset="960">
-              <caret line="34" column="46" selection-start-line="34" selection-start-column="46" selection-end-line="34" selection-end-column="46" />
+            <state vertical-scroll-proportion="-7.5833335" vertical-offset="328" max-vertical-offset="960">
+              <caret line="34" column="85" selection-start-line="34" selection-start-column="85" selection-end-line="34" selection-end-column="85" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="new_office.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/new_office.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-32.5" vertical-offset="0" max-vertical-offset="900">
+              <caret line="52" column="14" selection-start-line="52" selection-start-column="14" selection-end-line="52" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -179,7 +181,6 @@
         <option value="$PROJECT_DIR$/static/sass/style.scss" />
         <option value="$PROJECT_DIR$/static/css/style.css" />
         <option value="$PROJECT_DIR$/templates/elements.html" />
-        <option value="$PROJECT_DIR$/templates/new_office.html" />
         <option value="$PROJECT_DIR$/templates/new_user.html" />
         <option value="$PROJECT_DIR$/templates/profile.html" />
         <option value="$PROJECT_DIR$/templates/log_in.html" />
@@ -199,6 +200,7 @@
         <option value="$PROJECT_DIR$/dentemp_site/views.py" />
         <option value="$PROJECT_DIR$/templates/user_base.html" />
         <option value="$PROJECT_DIR$/templates/office_user_base.html" />
+        <option value="$PROJECT_DIR$/templates/new_office.html" />
       </list>
     </option>
   </component>
@@ -901,14 +903,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/new_office.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.75949365" vertical-offset="630" max-vertical-offset="3405">
-          <caret line="74" column="53" selection-start-line="74" selection-start-column="53" selection-end-line="74" selection-end-column="53" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/profile.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-8.125" vertical-offset="0" max-vertical-offset="330">
@@ -985,14 +979,6 @@
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
           <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/create_office.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-16.25" vertical-offset="0" max-vertical-offset="675">
-          <caret line="26" column="34" selection-start-line="26" selection-start-column="34" selection-end-line="26" selection-end-column="34" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1130,18 +1116,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/user_base.html">
+    <entry file="file://$PROJECT_DIR$/templates/create_office.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-12.5" vertical-offset="210" max-vertical-offset="960">
-          <caret line="34" column="101" selection-start-line="34" selection-start-column="101" selection-end-line="34" selection-end-column="101" />
+        <state vertical-scroll-proportion="0.6170886" vertical-offset="0" max-vertical-offset="675">
+          <caret line="26" column="34" selection-start-line="26" selection-start-column="34" selection-end-line="26" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/new_office.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-32.5" vertical-offset="0" max-vertical-offset="900">
+          <caret line="52" column="14" selection-start-line="52" selection-start-column="14" selection-end-line="52" selection-end-column="14" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/office_user_base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.806962" vertical-offset="0" max-vertical-offset="960">
-          <caret line="34" column="46" selection-start-line="34" selection-start-column="46" selection-end-line="34" selection-end-column="46" />
+        <state vertical-scroll-proportion="-7.5833335" vertical-offset="328" max-vertical-offset="960">
+          <caret line="34" column="85" selection-start-line="34" selection-start-column="85" selection-end-line="34" selection-end-column="85" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/user_base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2879747" vertical-offset="328" max-vertical-offset="960">
+          <caret line="34" column="45" selection-start-line="34" selection-start-column="45" selection-end-line="34" selection-end-column="45" />
           <folding />
         </state>
       </provider>
