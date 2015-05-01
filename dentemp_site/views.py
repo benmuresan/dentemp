@@ -66,6 +66,7 @@ def user_dash(request):
         date_list.append(str(d) + "000")
     output = "[" + ", ".join(date_list) + "]"
     days_available = len(days_selected)
+    # dates_available = days_selected
     number_of_events = EventProfile.objects.filter(fulfilled_by=request.user)
     num_events = len(number_of_events)
     first_name = UserProfile.objects.filter(first_name=request.user)
@@ -73,6 +74,7 @@ def user_dash(request):
 
     return render(request,
                   "user_dash.html",
+                  # {"dates_available": days_selected,
                   {"days_selected": output,
                    "days_available": days_available,
                    "number_of_events": num_events,
@@ -88,7 +90,7 @@ def office_dash(request):
     return render(request,
                   "office_dash.html",
                   {"number_of_events": num_events,
-                  "office_name": office_name})
+                   "office_name": office_name})
 
 
 def new_office(request, id):
@@ -156,11 +158,11 @@ def elements(request):
 @csrf_exempt
 def add_date(request):
     if request.POST:
-        date_available = DateAvailable()
         d = request.POST["date_available"]
         print d
         # da = date.fromtimestamp(int(d) / 1000)
         da = date.fromtimestamp(int(d) / 1000)
+        date_available, created = DateAvailable.objects.get_or_create(employee_available=request.user, date=da)
         print da
         date_available.date = da
         date_available.employee_available = request.user

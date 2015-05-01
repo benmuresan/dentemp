@@ -16,9 +16,11 @@
 
                 <section class="box">
                     <h3>Days Scheduled</h3>
+
                     <p>You currently have {{ number_of_events }} days scheduled.</p>
+
                     <div class="table-wrapper">
-                        <table>
+                        <table id="table">
                             <thead>
                             <tr>
                                 <th>Date</th>
@@ -51,13 +53,15 @@
             <div class="6u 12u(mobilep)">
                 <section class="box">
                     <h3>Days Available</h3>
-                    <p>You are currently available for {{ days_available }} days.<a href="#user_calendar" class=""> Add More</a></p>
+
+                    <p>You are currently available for {{ days_available }} days.<a href="#user_calendar" class=""> Add
+                        More</a></p>
 
                     <div class="table-wrapper">
-                        <table>
+                        <table id="available_table">
                             <thead>
                             <tr>
-{#                                <th> .</th>#}
+                                <th>&nbsp;</th>
                                 <th></th>
                                 <th></th>
                             </tr>
@@ -85,19 +89,54 @@
             </div>
         </div>
     </section>
-<A name="user_calendar"></A>
-<section class="container">
-<section class="box">
-<div ng-app="myApp">
-<div ng-controller="demoController">
-<multiple-date-picker sunday-first-day="true" days-selected="{{ days_selected|safe }}" day-click="dayClick"/></div>
-{#<form method="post" action="/add_date/">#}
-{#<input id="date_available" name="date_available"><input type="submit">#}
-{#{% csrf_token %}#}
-{#</form>#}
-</div>
-</section>
-</section>
+    <A name="user_calendar"></A>
+    <section class="container">
+        <section class="box">
+            <div ng-app="myApp">
+                <div ng-controller="demoController">
+                    <multiple-date-picker sunday-first-day="true" days-selected="{{ days_selected|safe }}"
+                                          day-click="dayClick"/>
+                </div>
+                {#<form method="post" action="/add_date/">#}
+                {#<input id="date_available" name="date_available"><input type="submit">#}
+                {#{% csrf_token %}#}
+                {#</form>#}
+            </div>
+        </section>
+    </section>
+    <script>
+        var table = document.getElementById("table");
+        function addRow(object) {
+            var row = document.createElement("tr");
+            row.innerHTML = "<td>" + object.name
+            + "</td><td>" + object.day
+            + "</td><td>" + object.rate + "</td>";
+            table.appendChild(row);
+        }
+        addRow({name: "Bob", day: "12.11.15", rate: 123})
+        addRow({name: "Bob", day: "12.11.15", rate: 123})
+        addRow({name: "Bob", day: "12.11.15", rate: 123})
+        addRow({name: "Bob", day: "12.11.15", rate: 123})
+        addRow({name: "Bob", day: "12.11.15", rate: 123})
+        addRow({name: "Bob", day: "12.11.15", rate: 123})
+    </script>
 
+    <script>
+        var dates_available = {{ days_selected|safe }};
+
+        var available_table = document.getElementById("available_table");
+        function add_available_row(object) {
+            var row = document.createElement("tr");
+            row.innerHTML = "<td>" + object.date + "</td>"
+            available_table.appendChild(row);
+
+        }
+
+        for (var i = 0; i < dates_available.length; i++) {
+            var ts = dates_available[i];
+            var d = new Date(ts);
+            add_available_row({"date": d.toString()});
+        }
+    </script>
 
 {% endblock %}
