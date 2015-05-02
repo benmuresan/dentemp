@@ -189,11 +189,19 @@ def add_date(request):
 def remove_date(request):
     if request.POST:
         d = request.POST["date_available"]
-        # print d
         da = date.fromtimestamp(int(d) / 1000)
-        # print da
         date_available = DateAvailable.objects.filter(employee_available=request.user, date=da)
-        print date_available
+        if len(date_available) < 1:
+            return HttpResponse("Not found.")
+        date_available[0].delete()
+    return HttpResponse("Success")
+
+
+@csrf_exempt
+def remove_date_by_id(request):
+    if request.POST:
+        id = request.POST["id"]
+        date_available = DateAvailable.objects.filter(id=id)
         if len(date_available) < 1:
             return HttpResponse("Not found.")
         date_available[0].delete()

@@ -137,21 +137,15 @@
             console.log(element.parentElement.parentElement.children[0]);
             console.log(date);
             console.log(id);
+
             var formData = new FormData();
-            formData.append("date_available", selected.valueOf());
+            formData.append("id", id);
             console.log(formData)
 
             var request = new XMLHttpRequest();
             console.log(formData)
-            if (!selected.selected) {
-                console.log("is selected")
-                request.open("POST", "/add_date/");
 
-            }
-            else {
-                console.log("is not selected")
-                request.open("POST", "/remove_date/");
-            }
+            request.open("POST", "/remove_date_by_id/");
             request.send(formData);
 
         }
