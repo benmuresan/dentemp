@@ -8,6 +8,8 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 import time
 from datetime import date
+# import dateutil.parser
+
 
 
 def index(request):
@@ -62,11 +64,22 @@ def new_user(request, id):
 def user_dash(request):
     days_selected = DateAvailable.objects.filter(employee_available=request.user)
     date_list = []
+    cal_date_list = []
     for d in days_selected:
-        date_list.append(str(d) + "000")
-    output = "[" + ", ".join(date_list) + "]"
+        date_list.append({"id": d.id, "timestamp": str(d) + "000"})
+        cal_date_list.append(str(d) + "000")
+    cal_output = "[" + ", ".join(cal_date_list) + "]"
+    output = json.dumps(date_list)
     days_available = len(days_selected)
-    # dates_available = days_selected
+    #
+    #
+    # dates_available = date_list[0]
+    # dates_available = dateutil.parser.parse(strf_date)
+    # date_only = dates_available.strftime("%Y-%M-%d")
+    #
+    #
+    #
+
     number_of_events = EventProfile.objects.filter(fulfilled_by=request.user)
     num_events = len(number_of_events)
     first_name = UserProfile.objects.filter(first_name=request.user)
@@ -74,8 +87,10 @@ def user_dash(request):
 
     return render(request,
                   "user_dash.html",
+
                   # {"dates_available": days_selected,
                   {"days_selected": output,
+                   "cal_days_selected": cal_output,
                    "days_available": days_available,
                    "number_of_events": num_events,
                    "first_name": first_name,

@@ -66,7 +66,7 @@
                                 <th></th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="availability_body">
                             <tr>
                                 <td>Something</td>
                                 <td>Ante turpis integer aliquet porttitor.</td>
@@ -94,7 +94,7 @@
         <section class="box">
             <div ng-app="myApp">
                 <div ng-controller="demoController">
-                    <multiple-date-picker sunday-first-day="true" days-selected="{{ days_selected|safe }}"
+                    <multiple-date-picker sunday-first-day="true" days-selected="{{ cal_days_selected|safe }}"
                                           day-click="dayClick"/>
                 </div>
                 {#<form method="post" action="/add_date/">#}
@@ -124,18 +124,43 @@
     <script>
         var dates_available = {{ days_selected|safe }};
 
-        var available_table = document.getElementById("available_table");
+        var available_table = document.getElementById("availability_body");
         function add_available_row(object) {
             var row = document.createElement("tr");
-            row.innerHTML = "<td>" + object.date + "</td>"
+            row.innerHTML = "<td colspan=2>" + object.date
+            + "</td><td>" + "<span onclick='remove_date(this,\"" + object.date + "\", " + object.id + ")' >Remove</span>";
             available_table.appendChild(row);
 
         }
+        function remove_date(element, date, id) {
+            element.parentElement.parentElement.remove();
+            console.log(element.parentElement.parentElement.children[0]);
+            console.log(date);
+            console.log(id);
+            var formData = new FormData();
+            formData.append("date_available", selected.valueOf());
+            console.log(formData)
 
+            var request = new XMLHttpRequest();
+            console.log(formData)
+            if (!selected.selected) {
+                console.log("is selected")
+                request.open("POST", "/add_date/");
+
+            }
+            else {
+                console.log("is not selected")
+                request.open("POST", "/remove_date/");
+            }
+            request.send(formData);
+
+        }
         for (var i = 0; i < dates_available.length; i++) {
-            var ts = dates_available[i];
+            var da = dates_available[i];
+            console.log(da);
+            var ts = parseInt(da.timestamp);
             var d = new Date(ts);
-            add_available_row({"date": d.toString()});
+            add_available_row({"id": da.id, "date": d.toString()});
         }
     </script>
 
