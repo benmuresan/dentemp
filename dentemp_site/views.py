@@ -60,6 +60,31 @@ def new_user(request, id):
                   "new_user.html", {"user": user})
 
 
+def new_office(request, id):
+    user = User.objects.get(id=id)
+
+    if request.POST:
+        user.office_name = request.POST["office_name"]
+        # user.last_name = request.POST["last_name"]
+        # user.license = request.POST["license"]
+        user.email = request.POST["email"]
+        user.phone_number = request.POST["phone_number"]
+        user.street_address = request.POST["street_address"]
+        user.city = request.POST["city"]
+        user.state = request.POST["state"]
+        user.zip = request.POST["zip"]
+        user.website = request.POST["website"]
+        # user.password = request.POST["password"]
+        user.save()
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        login(request, user)
+
+        return HttpResponseRedirect("/office_dash/")
+
+    return render(request,
+                  "new_office.html", {"user": user})
+
+
 @login_required
 def user_dash(request):
     days_selected = DateAvailable.objects.filter(employee_available=request.user)
@@ -71,14 +96,16 @@ def user_dash(request):
     cal_output = "[" + ", ".join(cal_date_list) + "]"
     output = json.dumps(date_list)
     days_available = len(days_selected)
-    #
-    #
-    # dates_available = date_list[0]
-    # dates_available = dateutil.parser.parse(strf_date)
-    # date_only = dates_available.strftime("%Y-%M-%d")
-    #
-    #
-    #
+
+    # creates a JSON output that includes what office created the event and the date.  Used in the user_dash page.
+    # accepted_position = EventProfile.objects.all()
+    accepted_position = EventProfile.objects.filter(fulfilled_by=request.user)
+    event_list = []
+    for event in accepted_position:
+        # event_list.append({"office_name": event.office_created, "date": event.date})
+        event_list.append({"office_name": event.office_created.office.office_name, "date": event.date})
+    event_output = json.dumps(event_list)
+    print event_output
 
     number_of_events = EventProfile.objects.filter(fulfilled_by=request.user)
     num_events = len(number_of_events)
@@ -87,9 +114,8 @@ def user_dash(request):
 
     return render(request,
                   "user_dash.html",
-
-                  # {"dates_available": days_selected,
                   {"days_selected": output,
+                   "event_output": event_output,
                    "cal_days_selected": cal_output,
                    "days_available": days_available,
                    "number_of_events": num_events,
@@ -97,6 +123,7 @@ def user_dash(request):
                    "last_name": last_name})
 
 
+@login_required
 def office_dash(request):
     number_of_events = EventProfile.objects.filter(office_created=request.user)
     num_events = len(number_of_events)
@@ -106,34 +133,6 @@ def office_dash(request):
                   "office_dash.html",
                   {"number_of_events": num_events,
                    "office_name": office_name})
-
-
-def new_office(request, id):
-    user = User.objects.get(id=id)
-
-    if request.POST:
-        user.first_name = request.POST["first_name"]
-        user.last_name = request.POST["last_name"]
-        user.license = request.POST["license"]
-        user.email = request.POST["email"]
-        user.phone_number = request.POST["phone_number"]
-        user.street_address = request.POST["street_address"]
-        user.city = request.POST["city"]
-        user.state = request.POST["state"]
-        user.zip = request.POST["zip"]
-        user.website = request.POST["website"]
-        user.anesthesia = request.POST["anesthesia"]
-        user.nitrous = request.POST["nitrous"]
-        user.restorative = request.POST["anesthesia"]
-        user.password = request.POST["password"]
-        user.save()
-        user.backend = 'django.contrib.auth.backends.ModelBackend'
-        login(request, user)
-
-        return redirect("/office_dash/")
-
-    return render(request,
-                  "new_office.html", {"user": user})
 
 
 def create_user(request):
@@ -157,12 +156,12 @@ def create_office(request):
     if request.POST:
         email = request.POST["email"]
         password = request.POST["password"]
-        user = User.objects.create_user(email, password)
+        user = User.objects.create_user(username=email, email=email, password=password)
         user.save()
-        return redirect("new_office.html" + str(user.id) + "/")
+        return redirect("/new_office/" + str(user.id) + "/")
 
     return render(request,
-                  "new_office.html")
+                  "create_office.html")
 
 
 def elements(request):

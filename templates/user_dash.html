@@ -67,21 +67,6 @@
                             </tr>
                             </thead>
                             <tbody id="availability_body">
-                            {#                            <tr>#}
-                            {#                                <td>Something</td>#}
-                            {#                                <td>Ante turpis integer aliquet porttitor.</td>#}
-                            {#                                <td>29.99</td>#}
-                            {#                            </tr>#}
-                            {#                            <tr>#}
-                            {#                                <td>Nothing</td>#}
-                            {#                                <td>Vis ac commodo adipiscing arcu aliquet.</td>#}
-                            {#                                <td>19.99</td>#}
-                            {#                            </tr>#}
-                            {#                            <tr>#}
-                            {#                                <td>Something</td>#}
-                            {#                                <td> Morbi faucibus arcu accumsan lorem.</td>#}
-                            {#                                <td>29.99</td>#}
-                            {#                            </tr>#}
                             </tbody>
                         </table>
                     </div>
@@ -105,13 +90,15 @@
             </div>
         </section>
     </section>
+{#    ///*This next script is to place the info into the left side table.(Days scheduled)*///#}
     <script>
+        var event_output = {{ event_output|safe }};
         var table = document.getElementById("table");
         function addRow(object) {
             var row = document.createElement("tr");
-            row.innerHTML = "<td>" + object.name
-            + "</td><td>" + object.day
-            + "</td><td>" + object.rate + "</td>";
+            row.innerHTML = "<td>" + object.office_name
+            + "</td><td>" + object.date + "</td>";
+{#            + "</td><td>" + object.rate + "</td>";#}
             table.appendChild(row);
         }
         addRow({name: "Bob", day: "12.11.15", rate: 123})
@@ -121,6 +108,8 @@
         addRow({name: "Bob", day: "12.11.15", rate: 123})
         addRow({name: "Bob", day: "12.11.15", rate: 123})
     </script>
+
+
 
     <script>
         var dates_available = {{ days_selected|safe }};
@@ -155,7 +144,7 @@
             console.log(da);
             var ts = parseInt(da.timestamp);
             var d = new Date(ts);
-            add_available_row({"id": da.id, "date": d.toString()});
+            add_available_row({"id": da.id, "date": d.toLocaleDateString()});
         }
     </script>
 

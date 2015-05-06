@@ -4,6 +4,8 @@ app.controller('demoController', ['$scope', function ($scope) {
     $scope.dayClick = function (time, selected) {
         console.log(selected.valueOf());
         console.log(selected.selected);
+        console.log($scope.selectedDays)
+
         var formData = new FormData();
         formData.append("date_available", selected.valueOf());
         console.log (formData)
@@ -39,6 +41,7 @@ app.controller('demoController', ['$scope', function ($scope) {
     };
 
     $scope.oneDayOff = [moment().date(14).valueOf()];
+    //Todo
     $scope.selectedDays = [moment().date(4).valueOf(), moment().date(5).valueOf(), moment().date(8).valueOf()];
 }]);
 
