@@ -25,6 +25,9 @@ def log_in(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
+                offices = OfficeProfile.objects.filter(user=user)
+                if len(offices) > 0:
+                    return HttpResponseRedirect("/office_dash/")
                 return HttpResponseRedirect('/user_dash/')
             else:
                 return render(request, 'account_disabled.html')
@@ -64,18 +67,17 @@ def new_office(request, id):
     user = User.objects.get(id=id)
 
     if request.POST:
-        user.office_name = request.POST["office_name"]
-        # user.last_name = request.POST["last_name"]
-        # user.license = request.POST["license"]
+        profile = OfficeProfile.objects.get(user=user)
+        profile.office_name = request.POST["office_name"]
         user.email = request.POST["email"]
-        user.phone_number = request.POST["phone_number"]
-        user.street_address = request.POST["street_address"]
-        user.city = request.POST["city"]
-        user.state = request.POST["state"]
-        user.zip = request.POST["zip"]
-        user.website = request.POST["website"]
-        # user.password = request.POST["password"]
+        profile.phone_number = request.POST["phone_number"]
+        profile.street_address = request.POST["street_address"]
+        profile.city = request.POST["city"]
+        profile.state = request.POST["state"]
+        profile.zip = request.POST["zip"]
+        profile.website = request.POST["website"]
         user.save()
+        profile.save()
         user.backend = 'django.contrib.auth.backends.ModelBackend'
         login(request, user)
 
@@ -96,16 +98,15 @@ def user_dash(request):
     cal_output = "[" + ", ".join(cal_date_list) + "]"
     output = json.dumps(date_list)
     days_available = len(days_selected)
-
-    # creates a JSON output that includes what office created the event and the date.  Used in the user_dash page.
-    # accepted_position = EventProfile.objects.all()
     accepted_position = EventProfile.objects.filter(fulfilled_by=request.user)
     event_list = []
     for event in accepted_position:
+        print event.office_created
+        profile = OfficeProfile.objects.get(user=event.office_created)
         # event_list.append({"office_name": event.office_created, "date": event.date})
-        event_list.append({"office_name": event.office_created.office.office_name, "date": event.date})
+        event_list.append({"office_name": profile.office_name, "date": str(event.date)})
     event_output = json.dumps(event_list)
-    print event_output
+    # print event_output
 
     number_of_events = EventProfile.objects.filter(fulfilled_by=request.user)
     num_events = len(number_of_events)
@@ -127,7 +128,7 @@ def user_dash(request):
 def office_dash(request):
     number_of_events = EventProfile.objects.filter(office_created=request.user)
     num_events = len(number_of_events)
-    office_name = OfficeProfile.objects.filter(office_name=request.user)
+    office_name = OfficeProfile.objects.get(user=request.user)
 
     return render(request,
                   "office_dash.html",
@@ -139,12 +140,19 @@ def create_user(request):
     if request.POST:
         print request.POST
         email = request.POST["email"]
-        password = request.POST["password"]
+        password1 = request.POST["password1"]
+        password2 = request.POST["password2"]
+        if password1 == password2:
+            password = password1
+        else:
+            return redirect("/password_no_match/")
+
         user = User.objects.create_user(username=email, email=email, password=password)
         user.save()
         profile = UserProfile()
         profile.user = user
         profile.employee_type = request.POST["type"]
+        print profile
         profile.save()
         return redirect("/new_user/" + str(user.id) + "/")
 
@@ -155,13 +163,33 @@ def create_user(request):
 def create_office(request):
     if request.POST:
         email = request.POST["email"]
-        password = request.POST["password"]
+        password1 = request.POST["password1"]
+        password2 = request.POST["password2"]
+        if password1 == password2:
+            password = password1
+        else:
+            return redirect("/password_no_match/")
+        # password = request.POST["password"]
         user = User.objects.create_user(username=email, email=email, password=password)
         user.save()
+        profile = OfficeProfile()
+        profile.user = user
+        profile.save()
         return redirect("/new_office/" + str(user.id) + "/")
 
     return render(request,
                   "create_office.html")
+
+
+    # if request.POST:
+    # email = request.POST["email"]
+    # password = request.POST["password"]
+    #     user = User.objects.create_user(username=email, email=email, password=password)
+    #     user.save()
+    #     return redirect("/new_office/" + str(user.id) + "/")
+    #
+    # return render(request,
+    #               "create_office.html")
 
 
 def elements(request):
@@ -225,6 +253,11 @@ def log_out(request):
 def generic(request):
     return render(request,
                   "generic.html")
+
+
+def password_no_match(request):
+    return render(request,
+                  "password_no_match.html")
 
 
 def account_disabled(request):

@@ -49,7 +49,7 @@ class OfficeProfile(models.Model):
     about_me_comments = models.CharField(max_length=255, blank=True, null=True)
 
     def __unicode__(self):
-        return self.email
+        return self.office_name
 
 
 class EventProfile(models.Model):
