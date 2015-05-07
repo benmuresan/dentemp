@@ -93,7 +93,10 @@ def new_office(request, id):
 
 @login_required
 def user_dash(request):
+
+    # This section creates a DateAvailable object with a timestamp and id attached.
     days_selected = DateAvailable.objects.filter(employee_available=request.user, is_available=True)
+    days_available = len(days_selected)
     date_list = []
     cal_date_list = []
     for d in days_selected:
@@ -101,15 +104,19 @@ def user_dash(request):
         cal_date_list.append(str(d) + "000")
     cal_output = "[" + ", ".join(cal_date_list) + "]"
     output = json.dumps(date_list)
-    days_available = len(days_selected)
+    # -----------------------------------------------------------------------------------------
+
+    # Creates event_output which contains office name/date that selected the user.
     accepted_position = EventProfile.objects.filter(fulfilled_by=request.user)
     event_list = []
     for event in accepted_position:
         print event.office_created
         profile = OfficeProfile.objects.get(user=event.office_created)
         # event_list.append({"office_name": event.office_created, "date": event.date})
-        event_list.append({"office_name": profile.office_name, "date": str(event.date)})
+        event_list.append({"office_name": profile.office_name, "id": event.id, "date": str(event.date)})
     event_output = json.dumps(event_list)
+    # --------------------------------------------------------------------------------------------
+
     number_of_events = EventProfile.objects.filter(fulfilled_by=request.user)
     num_events = len(number_of_events)
     x = UserProfile.objects.get(user=request.user)
@@ -187,7 +194,7 @@ def create_office(request):
     # email = request.POST["email"]
     # password = request.POST["password"]
     # user = User.objects.create_user(username=email, email=email, password=password)
-    #     user.save()
+    # user.save()
     #     return redirect("/new_office/" + str(user.id) + "/")
     #
     # return render(request,
@@ -228,13 +235,22 @@ def add_office_event(request):
                   "add_office_event.html",
                   context_dict)
 
+
 # TODO need help for JS from Kevin.
+@csrf_exempt
 def user_accept_event(request):
     if request.POST:
-        date_accepted = request.POST["date_accepted"]
-        a = DateAvailable.objects.get(employee_available=request.user, date=date_accepted)
+        id = request.POST["id"]
+        print id
+        # id_object = DateAvailable.objects.filter(id=id)
+        # date_accepted = request.POST["date_accepted"]
+        a = DateAvailable.objects.get(employee_available=request.user, id=id)
+        # print a.id
         a.is_available = False
         a.save()
+        print a
+        # Todo user date would be removed from available.  And the office event would be removed/closed.
+        # Todo This is where an email would be sent to the office that the date has been accepted.
     return HttpResponse("Success")
 
 

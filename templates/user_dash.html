@@ -78,12 +78,13 @@
 {#    ///*This next script is to place the info into the left side table.(Days scheduled)*///#}
     <script>
         var event_output = {{ event_output|safe }};
+
         var table = document.getElementById("event_table");
         function addRow(object) {
             var row = document.createElement("tr");
             row.innerHTML = "<td>" + object.date
-            + "</td><td>" + object.office_name + "</td>";
-{#            + "</td><td>" + object.rate + "</td>";#}
+            + "</td><td>" + object.office_name + "</td>"
+            + "</td><td>" + "<span onclick='user_accept_event(this,\"" + object.date + "\", " + object.id + ")' >Accept</span>";
             table.appendChild(row);
         }
         for (var i = 0; i < event_output.length; i++) {
@@ -91,6 +92,23 @@
             console.log(da);
             var d = new Date(da.date);
             addRow({"date": d.toLocaleDateString(), "office_name": da.office_name});
+        }
+        function user_accept_event(element, date, id) {
+{#            element.parentElement.parentElement.remove();#}
+{#            console.log(element.parentElement.parentElement.children[0]);#}
+            console.log(date);
+{#            console.log(id);#}
+
+            var formData = new FormData();
+            formData.append("id", id);
+            console.log(formData)
+
+            var request = new XMLHttpRequest();
+            console.log(formData)
+
+            request.open("POST", "/user_accept_event/");
+            request.send(formData);
+
         }
 {#        addRow({name: "Bob", day: "12.11.15", rate: 123})#}
     </script>
