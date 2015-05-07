@@ -1,5 +1,6 @@
 var app = angular.module('myApp', ['multipleDatePicker']);
 
+//This controller is on the User side.  Creates/Deletes days user is available through calendar.
 app.controller('demoController', ['$scope', function ($scope) {
     $scope.dayClick = function (time, selected) {
         console.log(selected.valueOf());
@@ -47,7 +48,7 @@ app.controller('demoController', ['$scope', function ($scope) {
     $scope.selectedDays = [moment().date(4).valueOf(), moment().date(5).valueOf(), moment().date(8).valueOf()];
 }]);
 
-
+//This controller returns the employees available for the selected day, or creates a event.
 app.controller('officeController', ['$scope', function ($scope) {
     $scope.dayClick = function (time, selected) {
         console.log(selected.valueOf());
@@ -62,7 +63,7 @@ app.controller('officeController', ['$scope', function ($scope) {
         console.log(formData)
         if(!selected.selected){
             console.log("is selected")
-            request.open("POST", "/add_date/");
+            request.open("POST", "/add_office_event/");
 
         }
         else{

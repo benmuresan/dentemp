@@ -41,19 +41,23 @@ def new_user(request, id):
     user = User.objects.get(id=id)
 
     if request.POST:
+        profile = UserProfile.objects.get(user=user)
+        profile.first_name = request.POST["first_name"]
         user.first_name = request.POST["first_name"]
+        profile.last_name = request.POST["last_name"]
         user.last_name = request.POST["last_name"]
-        user.license = request.POST["license"]
-        user.email = request.POST["email"]
-        user.phone_number = request.POST["phone_number"]
-        user.street_address = request.POST["street_address"]
-        user.city = request.POST["city"]
-        user.state = request.POST["state"]
-        user.zip = request.POST["zip"]
-        user.website = request.POST["website"]
-        user.anesthesia = request.POST.get("anesthesia", False)
-        user.nitrous = request.POST.get("nitrous", False)
-        user.restorative = request.POST.get("anesthesia", False)
+        profile.license = request.POST["license"]
+        profile.email = request.POST["email"]
+        profile.phone_number = request.POST["phone_number"]
+        profile.street_address = request.POST["street_address"]
+        profile.city = request.POST["city"]
+        profile.state = request.POST["state"]
+        profile.zip = request.POST["zip"]
+        profile.website = request.POST["website"]
+        profile.anesthesia = request.POST.get("anesthesia", False)
+        profile.nitrous = request.POST.get("nitrous", False)
+        profile.restorative = request.POST.get("anesthesia", False)
+        profile.save()
         user.save()
         user.backend = 'django.contrib.auth.backends.ModelBackend'
         login(request, user)
@@ -89,7 +93,7 @@ def new_office(request, id):
 
 @login_required
 def user_dash(request):
-    days_selected = DateAvailable.objects.filter(employee_available=request.user)
+    days_selected = DateAvailable.objects.filter(employee_available=request.user, is_available=True)
     date_list = []
     cal_date_list = []
     for d in days_selected:
@@ -106,13 +110,11 @@ def user_dash(request):
         # event_list.append({"office_name": event.office_created, "date": event.date})
         event_list.append({"office_name": profile.office_name, "date": str(event.date)})
     event_output = json.dumps(event_list)
-    # print event_output
-
     number_of_events = EventProfile.objects.filter(fulfilled_by=request.user)
     num_events = len(number_of_events)
-    first_name = UserProfile.objects.filter(first_name=request.user)
-    last_name = UserProfile.objects.filter(last_name=request.user)
-
+    x = UserProfile.objects.get(user=request.user)
+    first_name = x.first_name
+    last_name = x.last_name
     return render(request,
                   "user_dash.html",
                   {"days_selected": output,
@@ -184,7 +186,7 @@ def create_office(request):
     # if request.POST:
     # email = request.POST["email"]
     # password = request.POST["password"]
-    #     user = User.objects.create_user(username=email, email=email, password=password)
+    # user = User.objects.create_user(username=email, email=email, password=password)
     #     user.save()
     #     return redirect("/new_office/" + str(user.id) + "/")
     #
@@ -225,6 +227,15 @@ def add_office_event(request):
     return render(request,
                   "add_office_event.html",
                   context_dict)
+
+# TODO need help for JS from Kevin.
+def user_accept_event(request):
+    if request.POST:
+        date_accepted = request.POST["date_accepted"]
+        a = DateAvailable.objects.get(employee_available=request.user, date=date_accepted)
+        a.is_available = False
+        a.save()
+    return HttpResponse("Success")
 
 
 @csrf_exempt
