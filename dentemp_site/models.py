@@ -67,6 +67,7 @@ class EventProfile(models.Model):
 
 class DateAvailable(models.Model):
     employee_available = models.ForeignKey(User)
+    is_available = models.BooleanField(default=True)
     date = models.DateField(default=0)
 
     def __unicode__(self):

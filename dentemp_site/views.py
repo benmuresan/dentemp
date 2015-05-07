@@ -213,6 +213,21 @@ def add_date(request):
 
 
 @csrf_exempt
+def add_office_event(request):
+    context_dict = {}
+    if request.POST:
+        d = request.POST["date_available"]
+        print d
+        da = date.fromtimestamp(int(d) / 1000)
+        employees_available = DateAvailable.objects.filter(date=da, is_available=True)
+        print employees_available[0]
+        context_dict = {"employees": employees_available}
+    return render(request,
+                  "add_office_event.html",
+                  context_dict)
+
+
+@csrf_exempt
 def remove_date(request):
     if request.POST:
         d = request.POST["date_available"]

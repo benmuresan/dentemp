@@ -23,6 +23,7 @@ urlpatterns = patterns('',
                        url(r'^remove_date_by_id/', "dentemp_site.views.remove_date_by_id", name='remove_date_by_id'),
                        url(r'^pick_user/', "dentemp_site.views.pick_user", name='pick_user'),
                        url(r'^password_no_match/', "dentemp_site.views.password_no_match", name='password_no_match'),
+                       url(r'^add_office_event/', "dentemp_site.views.add_office_event", name='add_office_event'),
                        url(r'^', "dentemp_site.views.index", name='index'),
 
 )

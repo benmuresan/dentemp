@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block bodyblock %}
+
+    Hello
+<!-- Main -->
+{% for employee in employees %}
+    {{ employee.employee_available.first_name }}<br>
+    {{ employee.employee_available.last_name }}<br>
+    {% endfor %}
+
+{% endblock %}
