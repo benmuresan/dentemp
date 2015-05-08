@@ -106,18 +106,19 @@ def user_dash(request):
     output = json.dumps(date_list)
     # -----------------------------------------------------------------------------------------
 
-    # Creates event_output which contains office name/date that selected the user.
-    accepted_position = EventProfile.objects.filter(fulfilled_by=request.user)
+    # Creates event_output which contains office name/date/id that selected the user.
+    requested_user = EventProfile.objects.filter(requested_user=request.user)
     event_list = []
-    for event in accepted_position:
+    for event in requested_user:
         print event.office_created
+        print event.date
         profile = OfficeProfile.objects.get(user=event.office_created)
         # event_list.append({"office_name": event.office_created, "date": event.date})
         event_list.append({"office_name": profile.office_name, "id": event.id, "date": str(event.date)})
     event_output = json.dumps(event_list)
     # --------------------------------------------------------------------------------------------
 
-    number_of_events = EventProfile.objects.filter(fulfilled_by=request.user)
+    number_of_events = EventProfile.objects.filter(requested_user=request.user)
     num_events = len(number_of_events)
     x = UserProfile.objects.get(user=request.user)
     first_name = x.first_name
@@ -225,12 +226,30 @@ def add_date(request):
 def add_office_event(request):
     context_dict = {}
     if request.POST:
-        d = request.POST["date_available"]
-        print d
+        d = request.POST["date_needed"]
+        # This is where the employee type comes in.
+        type_user = request.POST["type_user"]
+        # print type_user
         da = date.fromtimestamp(int(d) / 1000)
-        employees_available = DateAvailable.objects.filter(date=da, is_available=True)
-        print employees_available[0]
-        context_dict = {"employees": employees_available}
+        # print da
+        employee_available = DateAvailable.objects.filter(date=da, is_available=True, employee_available__profile__employee_type=type_user)
+        print employee_available
+
+
+        event_list = []
+        for i in employee_available:
+            profile = UserProfile.objects.get(user=i.employee_available)
+            first_name = profile.first_name
+            last_name = profile.last_name
+            # print first_name
+            # print last_name
+            event_list.append({"first_name": first_name, "last_name": last_name})
+        users_available = json.dumps(event_list)
+        print users_available
+
+
+        context_dict = {"employees": users_available}
+        # return redirect("/add_office_event/")
     return render(request,
                   "add_office_event.html",
                   context_dict)
@@ -240,15 +259,19 @@ def add_office_event(request):
 @csrf_exempt
 def user_accept_event(request):
     if request.POST:
-        id = request.POST["id"]
-        print id
+        date = request.POST["date"]
+        # print type(date)
+        ds = time.strptime(date, "%b %d, %Y")
+        da = str(ds[0])+'-'+str(ds[1])+'-'+str(ds[2])
         # id_object = DateAvailable.objects.filter(id=id)
         # date_accepted = request.POST["date_accepted"]
-        a = DateAvailable.objects.get(employee_available=request.user, id=id)
+        a = DateAvailable.objects.get(employee_available=request.user, date=da)
         # print a.id
         a.is_available = False
+        #Todo This is where the user becomes the fulfilled_by?
+        # a.fulfilled_by = #The Users name
         a.save()
-        print a
+        print a.is_available
         # Todo user date would be removed from available.  And the office event would be removed/closed.
         # Todo This is where an email would be sent to the office that the date has been accepted.
     return HttpResponse("Success")

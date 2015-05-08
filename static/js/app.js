@@ -51,12 +51,19 @@ app.controller('demoController', ['$scope', function ($scope) {
 //This controller returns the employees available for the selected day, or creates a event.
 app.controller('officeController', ['$scope', function ($scope) {
     $scope.dayClick = function (time, selected) {
-        console.log(selected.valueOf());
-        console.log(selected.selected);
-        console.log($scope.selectedDays)
+        //console.log(selected.valueOf());
+        //console.log(selected.selected);
+        //console.log($scope.selectedDays)
+
+        if (document.getElementById("user_assistant").checked){
+            type_user = "assistant";
+        } else {
+            type_user = "hygienist";
+        }
 
         var formData = new FormData();
-        formData.append("date_available", selected.valueOf());
+        formData.append("type_user", type_user);
+        formData.append("date_needed", selected.valueOf());
         console.log (formData)
 
         var request = new XMLHttpRequest();

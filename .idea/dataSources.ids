@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="dataSourceStorage">
-  <data-source name="db" uuid="118cbc68-f3fc-4745-82bf-c2bc688faad9">
+  <data-source name="db" uuid="bec9371c-b488-4541-88d4-3a9395c98bb2">
     <database-info product="SQLite" version="3.7.6.3" jdbc-version="2.1" driver-name="SQLiteJDBC" driver-version="native"/>
     <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed"/>
     <schema name="" catalog=""/>
@@ -79,7 +79,7 @@
     </table>
     <table name="dentemp_site_eventprofile" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
-      <column name="fulfilled_by_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
+      <column name="requested_user_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
       <column name="office_created_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
       <column name="date" sqlType="DATE" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
       <column name="employee_type_needed" sqlType="VARCHAR(128)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
@@ -88,7 +88,7 @@
       <column name="special_instructions" sqlType="TEXT" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
       <primary-key columns="id"/>
       <index name="dentemp_site_eventprofile_aa9b433f" unique="true" columns="office_created_id"/>
-      <index name="dentemp_site_eventprofile_5dd15b7f" unique="true" columns="fulfilled_by_id"/>
+      <index name="dentemp_site_eventprofile_09c5cb58" unique="true" columns="requested_user_id"/>
     </table>
     <table name="dentemp_site_officeprofile" schema="" catalog="" type="TABLE">
       <column name="user_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>

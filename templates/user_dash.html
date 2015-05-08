@@ -89,7 +89,7 @@
         }
         for (var i = 0; i < event_output.length; i++) {
             var da = event_output[i];
-            console.log(da);
+{#            console.log(da);#}
             var d = new Date(da.date);
             addRow({"date": d.toLocaleDateString(), "office_name": da.office_name});
         }
@@ -100,11 +100,11 @@
 {#            console.log(id);#}
 
             var formData = new FormData();
-            formData.append("id", id);
-            console.log(formData)
+            formData.append("date", date);
+{#            console.log(formData)#}
 
             var request = new XMLHttpRequest();
-            console.log(formData)
+{#            console.log(formData)#}
 
             request.open("POST", "/user_accept_event/");
             request.send(formData);
@@ -128,16 +128,16 @@
         }
         function remove_date(element, date, id) {
             element.parentElement.parentElement.remove();
-            console.log(element.parentElement.parentElement.children[0]);
-            console.log(date);
-            console.log(id);
+{#            console.log(element.parentElement.parentElement.children[0]);#}
+{#            console.log(date);#}
+{#            console.log(id);#}
 
             var formData = new FormData();
-            formData.append("id", id);
-            console.log(formData)
+            formData.append("date", date);
+{#            console.log(formData)#}
 
             var request = new XMLHttpRequest();
-            console.log(formData)
+{#            console.log(formData)#}
 
             request.open("POST", "/remove_date_by_id/");
             request.send(formData);
@@ -145,7 +145,7 @@
         }
         for (var i = 0; i < dates_available.length; i++) {
             var da = dates_available[i];
-            console.log(da);
+{#            console.log(da);#}
             var ts = parseInt(da.timestamp);
             var d = new Date(ts);
             add_available_row({"id": da.id, "date": d.toLocaleDateString()});

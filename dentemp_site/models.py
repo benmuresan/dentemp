@@ -4,7 +4,7 @@ from django.utils.dateformat import format
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, primary_key=True)
+    user = models.OneToOneField(User, primary_key=True, related_name="profile")
     first_name = models.CharField(max_length=128)
     last_name = models.CharField(max_length=128)
     phone_number = models.CharField(max_length=128)
@@ -53,7 +53,9 @@ class OfficeProfile(models.Model):
 
 
 class EventProfile(models.Model):
-    fulfilled_by = models.ForeignKey(User, blank=True, null=True)
+    # This is where the users name would go once the job has been accepted.
+    # fulfilled_by = models.ForeignKey(User, blank=True, null=True)
+    requested_user = models.ForeignKey(User, blank=True, null=True)
     office_created = models.ForeignKey(User, related_name="events")
     date = models.DateField(default=0)
     employee_type_needed = models.CharField(max_length=128)
