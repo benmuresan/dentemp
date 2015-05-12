@@ -3,10 +3,37 @@
 {% block bodyblock %}
 
     Hello
-<!-- Main -->
-{% for employee in employees %}
-    {{ employee.employee_available.first_name }}<br>
-    {{ employee.employee_available.last_name }}<br>
-    {% endfor %}
+    <!-- Main -->
+    {#{% for employee in employees %}#}
+    {#    {{ employee.employee_available.first_name }}<br>#}
+    {#    {{ employee.employee_available.last_name }}<br>#}
+    {#    {% endfor %}#}
+    print {{ users_available }}
+
+    <section id="main" class="container">
+        <header>
+            <h2>Welcome {{ office_name }}!</h2>
+        </header>
+
+        <section class="container">
+            <div class="box">
+                <div class="table-wrapper">
+                    <table id="table">
+                        <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                        </thead>
+                        <tbody id="event_table">
+                        </tbody>
+                    </table>
+                </div>
+                {#                <h3>You currently have {{ number_of_events }} events posted.</h3>#}
+            </div>
+
+        </section>
+    </section>
 
 {% endblock %}

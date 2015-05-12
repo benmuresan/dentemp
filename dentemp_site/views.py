@@ -93,7 +93,6 @@ def new_office(request, id):
 
 @login_required
 def user_dash(request):
-
     # This section creates a DateAvailable object with a timestamp and id attached.
     days_selected = DateAvailable.objects.filter(employee_available=request.user, is_available=True)
     days_available = len(days_selected)
@@ -191,17 +190,6 @@ def create_office(request):
                   "create_office.html")
 
 
-    # if request.POST:
-    # email = request.POST["email"]
-    # password = request.POST["password"]
-    # user = User.objects.create_user(username=email, email=email, password=password)
-    # user.save()
-    #     return redirect("/new_office/" + str(user.id) + "/")
-    #
-    # return render(request,
-    #               "create_office.html")
-
-
 def elements(request):
     return render(request,
                   "elements.html")
@@ -224,7 +212,7 @@ def add_date(request):
 
 @csrf_exempt
 def add_office_event(request):
-    context_dict = {}
+    # context_dict = {}
     if request.POST:
         d = request.POST["date_needed"]
         # This is where the employee type comes in.
@@ -232,27 +220,27 @@ def add_office_event(request):
         # print type_user
         da = date.fromtimestamp(int(d) / 1000)
         # print da
-        employee_available = DateAvailable.objects.filter(date=da, is_available=True, employee_available__profile__employee_type=type_user)
+        employee_available = DateAvailable.objects.filter(date=da, is_available=True,
+                                                          employee_available__profile__employee_type=type_user)
         print employee_available
 
-
-        event_list = []
+        employee_available_on_date = []
         for i in employee_available:
             profile = UserProfile.objects.get(user=i.employee_available)
             first_name = profile.first_name
             last_name = profile.last_name
             # print first_name
             # print last_name
-            event_list.append({"first_name": first_name, "last_name": last_name})
-        users_available = json.dumps(event_list)
-        print users_available
+            employee_available_on_date.append({"first_name": first_name, "last_name": last_name})
+            users_available = json.dumps(employee_available_on_date)
+            print users_available
 
 
-        context_dict = {"employees": users_available}
+        # context_dict = {"employees": users_available}
         # return redirect("/add_office_event/")
     return render(request,
                   "add_office_event.html",
-                  context_dict)
+                  {"users_available": users_available})
 
 
 # TODO need help for JS from Kevin.
@@ -260,16 +248,15 @@ def add_office_event(request):
 def user_accept_event(request):
     if request.POST:
         date = request.POST["date"]
-        # print type(date)
+        print date
         ds = time.strptime(date, "%b %d, %Y")
-        da = str(ds[0])+'-'+str(ds[1])+'-'+str(ds[2])
-        # id_object = DateAvailable.objects.filter(id=id)
-        # date_accepted = request.POST["date_accepted"]
+        da = str(ds[0]) + '-' + str(ds[1]) + '-' + str(ds[2])
+        id_object = DateAvailable.objects.filter(id=id)
+        date_accepted = request.POST["date_accepted"]
         a = DateAvailable.objects.get(employee_available=request.user, date=da)
-        # print a.id
         a.is_available = False
-        #Todo This is where the user becomes the fulfilled_by?
-        # a.fulfilled_by = #The Users name
+        # Todo office would receive this user as confirmed on their dash for this day.
+
         a.save()
         print a.is_available
         # Todo user date would be removed from available.  And the office event would be removed/closed.
@@ -283,6 +270,7 @@ def remove_date(request):
         d = request.POST["date_available"]
         da = date.fromtimestamp(int(d) / 1000)
         date_available = DateAvailable.objects.filter(employee_available=request.user, date=da)
+        print date_available
         if len(date_available) < 1:
             return HttpResponse("Not found.")
         date_available[0].delete()

@@ -157,6 +157,14 @@ code {
     text-align: right;
 }
 
+span.link_accept {
+  color: blue;
+}
+
+span.link_remove {
+  color: darkred;
+}
+
 /* Section/Article */
 
 section.special, article.special {
