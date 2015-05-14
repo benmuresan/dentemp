@@ -78,9 +78,9 @@ class DateAvailable(models.Model):
 
 
 class LatLong(models.Model):
-    user = models.ForeignKey(User)
+    user = models.OneToOneField(User)
     lat = models.FloatField(default=True)
     long = models.FloatField(default=0)
 
     def __unicode__(self):
-        return self.email
+        return self.user.first_name

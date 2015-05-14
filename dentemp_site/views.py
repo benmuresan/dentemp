@@ -46,7 +46,7 @@ def new_user(request, id):
         profile = UserProfile.objects.get(user=user)
 
         location = LatLong()
-        location.user = request.user
+        location.user = user
         location.lat = request.POST["lat"]
         location.long = request.POST["long"]
 
