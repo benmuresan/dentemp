@@ -75,3 +75,12 @@ class DateAvailable(models.Model):
 
     def __unicode__(self):
         return format(self.date, 'U')
+
+
+class LatLong(models.Model):
+    user = models.ForeignKey(User)
+    lat = models.FloatField(default=True)
+    long = models.FloatField(default=0)
+
+    def __unicode__(self):
+        return self.email

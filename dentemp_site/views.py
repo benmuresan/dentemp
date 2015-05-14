@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from models import UserProfile, DateAvailable, EventProfile, OfficeProfile
+from models import UserProfile, DateAvailable, EventProfile, OfficeProfile, LatLong
 from django.contrib.auth import logout, login, authenticate
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -8,6 +8,8 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 import time
 from datetime import date
+from math import sqrt
+
 # import dateutil.parser
 
 
@@ -42,6 +44,12 @@ def new_user(request, id):
 
     if request.POST:
         profile = UserProfile.objects.get(user=user)
+
+        location = LatLong()
+        location.user = request.user
+        location.lat = request.POST["lat"]
+        location.long = request.POST["long"]
+
         profile.first_name = request.POST["first_name"]
         user.first_name = request.POST["first_name"]
         profile.last_name = request.POST["last_name"]
@@ -57,6 +65,7 @@ def new_user(request, id):
         profile.anesthesia = request.POST.get("anesthesia", False)
         profile.nitrous = request.POST.get("nitrous", False)
         profile.restorative = request.POST.get("anesthesia", False)
+        location.save()
         profile.save()
         user.save()
         user.backend = 'django.contrib.auth.backends.ModelBackend'
@@ -93,12 +102,13 @@ def new_office(request, id):
 
 @login_required
 def user_dash(request):
-    # This section creates a DateAvailable object with a timestamp and id attached.
+    # Creates a DateAvailable object with a timestamp and id attached.
     days_selected = DateAvailable.objects.filter(employee_available=request.user, is_available=True)
     days_available = len(days_selected)
     date_list = []
     cal_date_list = []
     for d in days_selected:
+        print (str(d))
         date_list.append({"id": d.id, "timestamp": str(d) + "000"})
         cal_date_list.append(str(d) + "000")
     cal_output = "[" + ", ".join(cal_date_list) + "]"
@@ -200,7 +210,6 @@ def add_date(request):
     if request.POST:
         d = request.POST["date_available"]
         print d
-        # da = date.fromtimestamp(int(d) / 1000)
         da = date.fromtimestamp(int(d) / 1000)
         date_available, created = DateAvailable.objects.get_or_create(employee_available=request.user, date=da)
         print da
@@ -212,6 +221,19 @@ def add_date(request):
 
 @csrf_exempt
 def add_office_event(request):
+    users_available = {}
+    # Location information for each user is retrieved, and placed into an array to be used for sorting.
+    # ------------------------------------------------------------------------------------------------------
+
+    lat_long_data = []
+    location_data = LatLong.objects.all() #This object should contain Lat, Long, user.
+    for each in location_data:
+        # print each.user.id
+        lat_long_data.append([float(each.lat), float(each.long), each.user.id])
+    print lat_long_data
+
+    # ------------------------------------------------------------------------------------------------------
+
     # context_dict = {}
     if request.POST:
         d = request.POST["date_needed"]
@@ -236,11 +258,12 @@ def add_office_event(request):
             print users_available
 
 
-        # context_dict = {"employees": users_available}
-        # return redirect("/add_office_event/")
+            # context_dict = {"employees": users_available}
+            # return redirect("/add_office_event/")
     return render(request,
                   "add_office_event.html",
                   {"users_available": users_available})
+    # "lat_long_data": lat_long_data}) #This line returns the lat/long list for user selection by distance.
 
 
 # TODO need help for JS from Kevin.
@@ -248,15 +271,22 @@ def add_office_event(request):
 def user_accept_event(request):
     if request.POST:
         date = request.POST["date"]
+        id = request.POST["id"]
+        print id
         print date
-        ds = time.strptime(date, "%b %d, %Y")
+        ds = time.strptime(date, "%m/%d/%Y")
+        print ds
         da = str(ds[0]) + '-' + str(ds[1]) + '-' + str(ds[2])
-        id_object = DateAvailable.objects.filter(id=id)
-        date_accepted = request.POST["date_accepted"]
+        # da = str(ds[1]) + '-' + str(ds[2]) + '-' + str(ds[0])
+        print da
+        # id_object = DateAvailable.objects.filter(id=id)
+        # print id_object
+        # date_accepted = request.POST["date_accepted"]
         a = DateAvailable.objects.get(employee_available=request.user, date=da)
+        # a = DateAvailable.objects.get(id=id)
+        print a
         a.is_available = False
         # Todo office would receive this user as confirmed on their dash for this day.
-
         a.save()
         print a.is_available
         # Todo user date would be removed from available.  And the office event would be removed/closed.
@@ -281,6 +311,7 @@ def remove_date(request):
 def remove_date_by_id(request):
     if request.POST:
         id = request.POST["id"]
+        print id
         date_available = DateAvailable.objects.filter(id=id)
         if len(date_available) < 1:
             return HttpResponse("Not found.")
@@ -288,12 +319,24 @@ def remove_date_by_id(request):
     return HttpResponse("Success")
 
 
-def pick_user(request):
-    r = time.strftime("%Y-%m-%d", time.localtime(int("1430092800")))
-    employees = DateAvailable.objects.filter(date=r)
-    for x in employees:
-        print x.employee_available.last_name, x.date
-    return render(request, "")
+    # Sends the dates the user is available to the calendar.
+def dates_clicked(request):
+    # Creates a DateAvailable object with a timestamp and id attached.
+    days_selected = DateAvailable.objects.filter(employee_available=request.user, is_available=True)
+    days_available = len(days_selected)
+    date_list = []
+    cal_date_list = []
+    for d in days_selected:
+        # print (str(d))
+        date_list.append({"id": d.id, "timestamp": str(d) + "000"})
+        # cal_date_list.append(int(d) + 000)
+        cal_date_list.append(str(d) + "000")
+    cal_output = "[" + ", ".join(cal_date_list) + "]"
+    # cal_output = "[" + ", ".join(cal_date_list) + "]"
+    output = json.dumps(cal_output)
+    # output = json.dumps(cal_date_list)
+    print output
+    return HttpResponse(output, content_type="application/json")
 
 
 @login_required
@@ -323,9 +366,19 @@ def incorrect_login(request):
                   "incorrect_login.html")
 
 
+# def profile(request):
+#     return render(request,
+#                   "profile.html")
+
+
+@login_required
 def profile(request):
+    p = UserProfile.objects.get(user=request.user)
+    print p.first_name
+    name = p.first_name
     return render(request,
-                  "profile.html")
+                  'profile.html',
+                  {"name": name})
 
 
 def contact(request):

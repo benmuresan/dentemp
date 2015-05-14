@@ -21,10 +21,11 @@ urlpatterns = patterns('',
                        url(r'^add_date/', "dentemp_site.views.add_date", name='add_date'),
                        url(r'^remove_date/', "dentemp_site.views.remove_date", name='remove_date'),
                        url(r'^remove_date_by_id/', "dentemp_site.views.remove_date_by_id", name='remove_date_by_id'),
-                       url(r'^pick_user/', "dentemp_site.views.pick_user", name='pick_user'),
+                       # url(r'^pick_user/', "dentemp_site.views.pick_user", name='pick_user'),
                        url(r'^password_no_match/', "dentemp_site.views.password_no_match", name='password_no_match'),
                        url(r'^add_office_event/', "dentemp_site.views.add_office_event", name='add_office_event'),
                        url(r'^user_accept_event/', "dentemp_site.views.user_accept_event", name='user_accept_event'),
+                       url(r'^dates_clicked/', "dentemp_site.views.dates_clicked", name='dates_clicked'),
                        url(r'^', "dentemp_site.views.index", name='index'),
 
 )

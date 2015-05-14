@@ -54,14 +54,21 @@
                             <div class="6u 12u(mobilep)">
                                 <input type="text" name="zip" id="zip" value="" placeholder="Zip Code"/>
                             </div>
-                            <br/>
-
                             <div class="6u 12u(mobilep)">
-                                <input type="url" name="website" id="url" value="" placeholder="Website Address (If applicable)"/>
+                                <input type="url" name="website" id="url" value=""
+                                       placeholder="Website Address (If applicable)"/>
                             </div>
+                            <div style="visibility: hidden;" class="6u 12u(mobilep)">
+                                <input type="text" name="lat" id="lat" value=""/>
+                            </div>
+                            <div style="visibility: hidden;" class="6u 12u(mobilep)">
+                                <input type="text" name="long" id="long" value=""/>
+                            </div>
+                            <br/>
                         </div>
 
                         <hr/>
+
                         <h3>What skills do you have?</h3>
 
                         <div class="row uniform 50%">
@@ -97,5 +104,27 @@
             </div>
         </div>
     </section>
+
+    {#    This script changes the lat and long text box above to the correct lat/long of the zip so it can be submited.#}
+    <script>
+        $("#zip").blur(function () {
+            var zipcode = document.getElementById('zip').value;
+            console.log(zipcode);
+            {#    var zipcode = 97024;#}
+
+            $.ajax({
+                url: "http://maps.googleapis.com/maps/api/geocode/json?address=santa+cruz&components=postal_code:" + zipcode + "&sensor=false",
+                method: "POST",
+                success: function (data) {
+                    latitude = data.results[0].geometry.location.lat;
+                    longitude = data.results[0].geometry.location.lng;
+                    {#    alert("Lat = "+latitude+"- Long = "+longitude);#}
+                    $('#lat').val(latitude);
+                    $('#long').val(longitude);
+                }
+            });
+        });
+    </script>
+
 
 {% endblock %}
