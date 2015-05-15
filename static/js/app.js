@@ -3,20 +3,31 @@ var app = angular.module('myApp', ['multipleDatePicker']);
 //This controller is on the User side.
 app.controller('demoController', ['$scope', '$http', function ($scope, $http) {
     //Gets dates that have already been selected and displays them on the calendar.
+
     $scope.selectedDays = [moment().date().valueOf()];
-    $http.get('/dates_clicked/')
-        .then(function (res) {
-            console.log(res)
-            ////# -------------------------------------------------------------
-            //var correctData_list = [];
-            //for(
-            //    date in Json.parse(res.data);
-            //    var correctData = date + "UTC")
-            //    correctData_list.append(correctData);
-            //)
-            //$scope.selectedDays = correctData_list;
-            ////# -----------------------------------------------------------
-            $scope.selectedDays = JSON.parse(res.data);
+
+
+    $http.get('/dates_clicked/').then(function (responseObject) {
+            console.log(responseObject);
+            var correctData = JSON.parse(responseObject.data);
+
+            var tempDate = new Date();
+            var minutes_from_gmt = tempDate.getTimezoneOffset();
+            var seconds_in_min = 60;
+            var millis_in_seconds = 1000;
+            var ts_delta = minutes_from_gmt * seconds_in_min * millis_in_seconds;
+
+            for (var i = 0; i < correctData.length; i++) {
+                var ts_source = correctData[i];
+                var sourceDate = new Date(ts_source);
+                console.log(sourceDate);
+                var ts_output = ts_source + ts_delta;
+                var output_date = new Date(ts_output);
+                console.log(output_date)
+                //var out = new Date(ts_output);
+                correctData[i] = ts_output;
+            }
+            $scope.selectedDays = correctData;
         });
 
 
