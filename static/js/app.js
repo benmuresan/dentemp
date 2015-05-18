@@ -2,14 +2,16 @@ var app = angular.module('myApp', ['multipleDatePicker']);
 
 //This controller is on the User side.
 app.controller('demoController', ['$scope', '$http', function ($scope, $http) {
+
     //Gets dates that have already been selected and displays them on the calendar.
 
     $scope.selectedDays = [moment().date().valueOf()];
 
-
+    //Gets dates and adds the correct timeszone offset to the date. Then displays on calendar.
     $http.get('/dates_clicked/').then(function (responseObject) {
-            console.log(responseObject);
+            //console.log(responseObject);
             var correctData = JSON.parse(responseObject.data);
+        //console.log(correctData)
 
             var tempDate = new Date();
             var minutes_from_gmt = tempDate.getTimezoneOffset();
@@ -19,11 +21,14 @@ app.controller('demoController', ['$scope', '$http', function ($scope, $http) {
 
             for (var i = 0; i < correctData.length; i++) {
                 var ts_source = correctData[i];
+
+
+                //console.log(ts_source);
                 var sourceDate = new Date(ts_source);
-                console.log(sourceDate);
+                //console.log(sourceDate);
                 var ts_output = ts_source + ts_delta;
                 var output_date = new Date(ts_output);
-                console.log(output_date)
+                //console.log(output_date)
                 //var out = new Date(ts_output);
                 correctData[i] = ts_output;
             }
@@ -33,23 +38,23 @@ app.controller('demoController', ['$scope', '$http', function ($scope, $http) {
 
     //console.log(moment().date(5).valueOf())
     $scope.dayClick = function (time, selected) {
-        console.log(selected.valueOf());
-        console.log(selected.selected);
-        console.log($scope.selectedDays)
+        //console.log(selected.valueOf());
+        //console.log(selected.selected);
+        //console.log($scope.selectedDays)
 
         var formData = new FormData();
         formData.append("date_available", selected.valueOf());
-        console.log(formData)
+        //console.log(formData);
 
         var request = new XMLHttpRequest();
         console.log(formData)
         if (!selected.selected) {
-            console.log("is selected")
+            //console.log("is selected")
             request.open("POST", "/add_date/");
 
         }
         else {
-            console.log("is not selected")
+            //console.log("is not selected")
             request.open("POST", "/remove_date/");
         }
         request.send(formData);
@@ -73,17 +78,17 @@ app.controller('officeController', ['$scope', function ($scope) {
         var formData = new FormData();
         formData.append("type_user", type_user);
         formData.append("date_needed", selected.valueOf());
-        console.log(formData)
+        //console.log(formData);
 
         var request = new XMLHttpRequest();
-        console.log(formData)
+        console.log(formData);
         if (!selected.selected) {
-            console.log("is selected")
+            //console.log("is selected")
             request.open("POST", "/add_office_event/");
 
         }
         else {
-            console.log("is not selected")
+            //console.log("is not selected")
             request.open("POST", "/remove_date/");
         }
         request.send(formData);

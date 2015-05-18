@@ -42,10 +42,23 @@
                             <div class="6u 12u(mobilep)">
                                 <input type="text" name="zip" id="zip" value="" placeholder="Zip Code"/>
                             </div>
-                            <div class="6u 12u(mobilep)">
-                                <input type="url" name="website" id="url" value="" placeholder="Website Address"/>
-                            </div>
                         </div>
+{#                        <div style="" class="6u 12u(mobilep)">#}
+{#                            <input type="text" name="lat" id="lat" value=""/>#}
+{#                        </div>#}
+{#                        <div style="" class="6u 12u(mobilep)">#}
+{#                            <input type="text" name="long" id="long" value=""/>#}
+{#                        </div>#}
+                        <div class="6u 12u(mobilep)">
+                            <input type="url" name="website" id="url" value="" placeholder="Website Address"/>
+                        </div>
+                        <div style="visibility: hidden;" class="6u 12u(mobilep)">
+                            <input type="text" name="lat" id="lat" value=""/>
+                        </div>
+                        <div style="visibility: hidden;" class="6u 12u(mobilep)">
+                            <input type="text" name="long" id="long" value=""/>
+                        </div>
+
                         {% csrf_token %}
                         <div class="row uniform">
                             <div class="12u">
@@ -56,12 +69,33 @@
                             </div>
                         </div>
                     </form>
-
-                    <hr/>
-
                 </section>
             </div>
+
+            <hr/>
         </div>
     </section>
+
+
+    {#    This script changes the lat and long text box above to the correct lat/long of the zip so it can be submited.#}
+    <script>
+        $("#zip").blur(function () {
+            var zipcode = document.getElementById('zip').value;
+            console.log(zipcode);
+
+            $.ajax({
+                url: "http://maps.googleapis.com/maps/api/geocode/json?address=santa+cruz&components=postal_code:" + zipcode + "&sensor=false",
+                method: "POST",
+                success: function (data) {
+                    latitude = data.results[0].geometry.location.lat;
+                    longitude = data.results[0].geometry.location.lng;
+                    $('#lat').val(latitude);
+                    $('#long').val(longitude);
+                    console.log(latitude);
+                    console.log(longitude);
+                }
+            });
+        });
+    </script>
 
 {% endblock %}

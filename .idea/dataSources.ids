@@ -47,6 +47,7 @@
       <primary-key columns="id"/>
       <exported-key name="#FAKE_auth_user_groups_2" table="auth_user_groups" schema="" catalog="" columns="user_id"/>
       <exported-key name="#FAKE_auth_user_user_permissions_2" table="auth_user_user_permissions" schema="" catalog="" columns="user_id"/>
+      <exported-key name="#FAKE_dentemp_site_latlong_1" table="dentemp_site_latlong" schema="" catalog="" columns="user_id"/>
       <exported-key name="#FAKE_django_admin_log_1" table="django_admin_log" schema="" catalog="" columns="user_id"/>
     </table>
     <table name="auth_user_groups" schema="" catalog="" type="TABLE">
@@ -89,6 +90,15 @@
       <primary-key columns="id"/>
       <index name="dentemp_site_eventprofile_aa9b433f" unique="true" columns="office_created_id"/>
       <index name="dentemp_site_eventprofile_09c5cb58" unique="true" columns="requested_user_id"/>
+    </table>
+    <table name="dentemp_site_latlong" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="user_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="lat" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="long" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_dentemp_site_latlong_1" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="dentemp_site_latlong_6340c63c" unique="true" columns="user_id"/>
     </table>
     <table name="dentemp_site_officeprofile" schema="" catalog="" type="TABLE">
       <column name="user_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>

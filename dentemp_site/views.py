@@ -80,6 +80,12 @@ def new_office(request, id):
     user = User.objects.get(id=id)
 
     if request.POST:
+
+        location = LatLong()
+        location.user = user
+        location.lat = request.POST["lat"]
+        location.long = request.POST["long"]
+
         profile = OfficeProfile.objects.get(user=user)
         profile.office_name = request.POST["office_name"]
         user.email = request.POST["email"]
@@ -89,6 +95,7 @@ def new_office(request, id):
         profile.state = request.POST["state"]
         profile.zip = request.POST["zip"]
         profile.website = request.POST["website"]
+        location.save()
         user.save()
         profile.save()
         user.backend = 'django.contrib.auth.backends.ModelBackend'
@@ -113,6 +120,7 @@ def user_dash(request):
         cal_date_list.append(str(d) + "000")
     cal_output = "[" + ", ".join(cal_date_list) + "]"
     output = json.dumps(date_list)
+    print output
     # -----------------------------------------------------------------------------------------
 
     # Creates event_output which contains office name/date/id that selected the user.

@@ -146,8 +146,10 @@
 
             <div ng-app="myApp">
                 <div ng-controller="demoController">
-                    <multiple-date-picker sunday-first-day="true" days-selected="selectedDays" xxxdays-selected="{{ cal_days_selected|safe }}"
+                    <multiple-date-picker sunday-first-day="true" days-selected="selectedDays"
                                           day-click="dayClick"/>
+                    {#                    <multiple-date-picker sunday-first-day="true" days-selected="selectedDays" xxxdays-selected="{{ cal_days_selected|safe }}"#}
+                    {#                                          day-click="dayClick"/>#}
                 </div>
             </div>
         </section>
@@ -159,7 +161,7 @@
         var event_output = {{ event_output|safe }};
         var selectedDate = undefined;
         var selectedId = undefined;
-{##}
+        {##}
         function confirmDate() {
             user_accept_event(selectedDate, selectedId)
 
@@ -176,7 +178,7 @@
             var row = document.createElement("tr");
             row.innerHTML = "<td>" + object.date
             + "</td><td>" + object.office_name + "</td>"
-{#            + "</td><td>" + "<span class='link_accept' onclick='user_accept_event(this,\"" + object.date + "\", " + object.id + ")' >Accept?</span>";#}
+            {#            + "</td><td>" + "<span class='link_accept' onclick='user_accept_event(this,\"" + object.date + "\", " + object.id + ")' >Accept?</span>";#}
             + "</td><td>" + "<a href='#openModal' onclick='rememberDate(\"" + object.date + "\", " + object.id + ")'> <span class='link_accept' >Accept?</span></a>";
             table.appendChild(row);
         }
@@ -194,7 +196,7 @@
             var request = new XMLHttpRequest();
             request.open("POST", "/user_accept_event/");
             request.send(formData);
-            window.location="#"
+            window.location = "#"
         }
 
     </script>
@@ -203,6 +205,7 @@
     {#Availability Table#}
     <script>
         var dates_available = {{ days_selected|safe }};
+{#        console.log(dates_available);#}
 
         var available_table = document.getElementById("availability_body");
         function add_available_row(object) {
@@ -215,11 +218,11 @@
         function remove_date(element, date, id) {
             element.parentElement.parentElement.remove();
             {#            console.log(element.parentElement.parentElement.children[0]);#}
-                        console.log(date);
-                        console.log(id);
+{#            console.log(date);#}
+{#            console.log(id);#}
 
             var formData = new FormData();
-{#            formData.append("date", date);#}
+            {#            formData.append("date", date);#}
             formData.append("id", id);
             {#            console.log(formData)#}
 
@@ -230,12 +233,25 @@
             request.send(formData);
 
         }
+
+        var tempDate = new Date();
+        var minutes_from_gmt = tempDate.getTimezoneOffset();
+        var seconds_in_min = 60;
+        var millis_in_seconds = 1000;
+        var ts_delta = minutes_from_gmt * seconds_in_min * millis_in_seconds;
+{#        var final_dates = [];#}
+
         for (var i = 0; i < dates_available.length; i++) {
             var da = dates_available[i];
-            {#            console.log(da);#}
             var ts = parseInt(da.timestamp);
-            var d = new Date(ts);
-            add_available_row({"id": da.id, "date": d.toLocaleDateString()});
+
+            var sourceDate = new Date(ts);
+            var ts_output = ts + ts_delta;
+            var output_date = new Date(ts_output);
+{#            final_dates = ts_output;#}
+{#            console.log(final_dates);#}
+            add_available_row({"id": da.id, "date": output_date.toLocaleDateString()});
+
         }
     </script>
 
