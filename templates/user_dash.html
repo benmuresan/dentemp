@@ -61,71 +61,9 @@
     </section>
 
 
-
-    <style>
-        .modalDialog {
-            position: fixed;
-            font-family: Arial, Helvetica, sans-serif;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 99999;
-            opacity: 0;
-            -webkit-transition: opacity 400ms ease-in;
-            -moz-transition: opacity 400ms ease-in;
-            transition: opacity 400ms ease-in;
-            pointer-events: none;
-        }
-
-        .modalDialog:target {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .modalDialog > div {
-            width: 400px;
-            position: relative;
-            margin: 10% auto;
-            padding: 5px 20px 13px 20px;
-            border-radius: 10px;
-            background: #fff;
-            background: -moz-linear-gradient(#fff, #999);
-            background: -webkit-linear-gradient(#fff, #999);
-            background: -o-linear-gradient(#fff, #999);
-        }
-
-        .close {
-            background: #606061;
-            color: #FFFFFF;
-            line-height: 25px;
-            position: absolute;
-            right: -12px;
-            text-align: center;
-            top: -10px;
-            width: 24px;
-            text-decoration: none;
-            font-weight: bold;
-            -webkit-border-radius: 12px;
-            -moz-border-radius: 12px;
-            border-radius: 12px;
-            -moz-box-shadow: 1px 1px 3px #000;
-            -webkit-box-shadow: 1px 1px 3px #000;
-            box-shadow: 1px 1px 3px #000;
-        }
-
-        .close:hover {
-            background: #00d9ff;
-        }
-    </style>
-
-
-    <a href="#openModal">Open Modal</a>
-
     <div id="openModal" class="modalDialog">
         <div>
-            <a href="#close" title="Close" class="close">X</a>
+{#            <a href="#close" title="Close" class="close">X</a>#}
 
             <h2>Commit to this day?</h2>
 
@@ -161,7 +99,6 @@
         var event_output = {{ event_output|safe }};
         var selectedDate = undefined;
         var selectedId = undefined;
-        {##}
         function confirmDate() {
             user_accept_event(selectedDate, selectedId)
 
@@ -172,6 +109,7 @@
             selectedId = id;
             console.log(date)
         }
+        {#        Creates the rows for dates and offices that requested user.#}
         var table = document.getElementById("event_table");
         function addRow(object) {
             console.log(object.date)
@@ -182,12 +120,14 @@
             + "</td><td>" + "<a href='#openModal' onclick='rememberDate(\"" + object.date + "\", " + object.id + ")'> <span class='link_accept' >Accept?</span></a>";
             table.appendChild(row);
         }
+        {#        For every event the user has been requested for this loop adds the row for the office name and date.#}
         for (var i = 0; i < event_output.length; i++) {
             var da = event_output[i];
             {#            console.log(da);#}
             var d = new Date(da.date);
             addRow({"date": d.toLocaleDateString(), "office_name": da.office_name});
         }
+        {#        This function allows the user to accept an event.#}
         function user_accept_event(date, id) {
             console.log(date);
             var formData = new FormData();
@@ -205,9 +145,10 @@
     {#Availability Table#}
     <script>
         var dates_available = {{ days_selected|safe }};
-{#        console.log(dates_available);#}
+        {#        console.log(dates_available);#}
 
         var available_table = document.getElementById("availability_body");
+        {#        This function adds the rows in the availability table.#}
         function add_available_row(object) {
             var row = document.createElement("tr");
             row.innerHTML = "<td colspan=2>" + object.date
@@ -215,20 +156,13 @@
             available_table.appendChild(row);
 
         }
+        {#        This function removes the dates available by id.#}
         function remove_date(element, date, id) {
             element.parentElement.parentElement.remove();
             {#            console.log(element.parentElement.parentElement.children[0]);#}
-{#            console.log(date);#}
-{#            console.log(id);#}
-
             var formData = new FormData();
-            {#            formData.append("date", date);#}
             formData.append("id", id);
-            {#            console.log(formData)#}
-
             var request = new XMLHttpRequest();
-            {#            console.log(formData)#}
-
             request.open("POST", "/remove_date_by_id/");
             request.send(formData);
 
@@ -239,8 +173,8 @@
         var seconds_in_min = 60;
         var millis_in_seconds = 1000;
         var ts_delta = minutes_from_gmt * seconds_in_min * millis_in_seconds;
-{#        var final_dates = [];#}
-
+        {#        var final_dates = [];#}
+        {#This for loop adds the correct timezone offset and displays it in the users availability table.#}
         for (var i = 0; i < dates_available.length; i++) {
             var da = dates_available[i];
             var ts = parseInt(da.timestamp);
@@ -248,8 +182,8 @@
             var sourceDate = new Date(ts);
             var ts_output = ts + ts_delta;
             var output_date = new Date(ts_output);
-{#            final_dates = ts_output;#}
-{#            console.log(final_dates);#}
+            {#            final_dates = ts_output;#}
+            {#            console.log(final_dates);#}
             add_available_row({"id": da.id, "date": output_date.toLocaleDateString()});
 
         }

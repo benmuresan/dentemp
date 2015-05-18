@@ -381,12 +381,54 @@ def incorrect_login(request):
 
 @login_required
 def profile(request):
-    p = UserProfile.objects.get(user=request.user)
-    print p.first_name
-    name = p.first_name
+    profile = UserProfile.objects.get(user=request.user)
+    print profile.first_name
+    first_name = profile.first_name
+    last_name = profile.last_name
+    license = profile.license
+    email = profile.email
+    phone_number = profile.phone_number
+    street_address = profile.street_address
+    city = profile.city
+    state = profile.state
+    zip = profile.zip
+    website = profile.website
+    anesthesia = profile.anesthesia
+    nitrous = profile.nitrous
+    restorative = profile.restorative
+
+    # first_name = profile.first_name
+    # profile.first_name = request.POST["first_name"]
+    # profile.last_name = request.POST["last_name"]
+    # profile.last_name = request.POST["last_name"]
+    # profile.license = request.POST["license"]
+    # profile.email = request.POST["email"]
+    # profile.phone_number = request.POST["phone_number"]
+    # profile.street_address = request.POST["street_address"]
+    # profile.city = request.POST["city"]
+    # profile.state = request.POST["state"]
+    # profile.zip = request.POST["zip"]
+    # profile.website = request.POST["website"]
+    # profile.anesthesia = request.POST.get("anesthesia", False)
+    # profile.nitrous = request.POST.get("nitrous", False)
+    # profile.restorative = request.POST.get("anesthesia", False)
+
     return render(request,
                   'profile.html',
-                  {"name": name})
+                  {"first_name": first_name,
+                   "last_name": last_name,
+                   "email": email,
+                   "phone_number": phone_number,
+                   "street_address": street_address,
+                   "city": city,
+                   "state": state,
+                   "zip": zip,
+                   "website": website,
+                   "anesthesia": anesthesia,
+                   "nitrous": nitrous,
+                   "restorative": restorative,
+                   "license": license,
+                   })
 
 
 def contact(request):
