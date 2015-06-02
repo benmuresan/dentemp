@@ -4,10 +4,10 @@
 
     Hello
     <!-- Main -->
-    {#{% for employee in employees %}#}
-    {#    {{ employee.employee_available.first_name }}<br>#}
-    {#    {{ employee.employee_available.last_name }}<br>#}
-    {#    {% endfor %}#}
+    {% for employee in users_available %}
+        {{ employee.employee_available.first_name }}<br>
+        {{ employee.employee_available.last_name }}<br>
+        {% endfor %}
     print {{ users_available }}
 
     <section id="main" class="container">

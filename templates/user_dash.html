@@ -63,7 +63,7 @@
 
     <div id="openModal" class="modalDialog">
         <div>
-{#            <a href="#close" title="Close" class="close">X</a>#}
+            {#            <a href="#close" title="Close" class="close">X</a>#}
 
             <h2>Commit to this day?</h2>
 
@@ -112,7 +112,7 @@
         {#        Creates the rows for dates and offices that requested user.#}
         var table = document.getElementById("event_table");
         function addRow(object) {
-            console.log(object.date)
+            {#            console.log(object.date)#}
             var row = document.createElement("tr");
             row.innerHTML = "<td>" + object.date
             + "</td><td>" + object.office_name + "</td>"
@@ -120,13 +120,41 @@
             + "</td><td>" + "<a href='#openModal' onclick='rememberDate(\"" + object.date + "\", " + object.id + ")'> <span class='link_accept' >Accept?</span></a>";
             table.appendChild(row);
         }
+
+        {#        ---------------------------------------------------------------------------------#}
+        {#        Converts the date to the correct date based on the useres timezone offset.#}
+        var tempDate = new Date();
+        var minutes_from_gmt = tempDate.getTimezoneOffset();
+        var seconds_in_min = 60;
+        var millis_in_seconds = 1000;
+        var ts_delta = minutes_from_gmt * seconds_in_min * millis_in_seconds;
+
+
         {#        For every event the user has been requested for this loop adds the row for the office name and date.#}
         for (var i = 0; i < event_output.length; i++) {
             var da = event_output[i];
-            {#            console.log(da);#}
             var d = new Date(da.date);
-            addRow({"date": d.toLocaleDateString(), "office_name": da.office_name});
+            console.log(d);
+            //Turns date to a json string
+            var json_strigify = JSON.stringify(d);
+            console.log(json_strigify);
+            //Turns json string date to a ISO Date
+            var dateStr = JSON.parse(json_strigify);
+            console.log(dateStr);
+            //Turns ISO date to a timestamp
+            var date = new Date(dateStr);
+            var date_in_milliseconds = date.getTime();
+            console.log(date_in_milliseconds);
+            //Adds the timezone difference to timestamp date
+            var final = date_in_milliseconds + ts_delta;
+            console.log(final);
+            //Turns timestamp back to a readable date
+            var output_date = new Date(final);
+            addRow({"date": output_date.toLocaleDateString(), "office_name": da.office_name});
         }
+        {#        ---------------------------------------------------------------------------------#}
+
+
         {#        This function allows the user to accept an event.#}
         function user_accept_event(date, id) {
             console.log(date);

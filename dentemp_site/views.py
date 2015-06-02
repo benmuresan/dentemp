@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 import time
 from datetime import date
+from radius import filter_by_distance
 # from math import sqrt
 
 # import dateutil.parser
@@ -80,7 +81,6 @@ def new_office(request, id):
     user = User.objects.get(id=id)
 
     if request.POST:
-
         location = LatLong()
         location.user = user
         location.lat = request.POST["lat"]
@@ -123,7 +123,7 @@ def user_dash(request):
     print output
     # -----------------------------------------------------------------------------------------
 
-    # Creates event_output which contains office name/date/id that selected the user.
+    # Creates event_output json which contains office name/date/id that selected the user.
     requested_user = EventProfile.objects.filter(requested_user=request.user)
     event_list = []
     for event in requested_user:
@@ -229,18 +229,20 @@ def add_date(request):
 
 @csrf_exempt
 def add_office_event(request):
-    users_available = {}
-    # Location information for each user is retrieved, and placed into an array to be used for sorting.
-    # ------------------------------------------------------------------------------------------------------
-
-    lat_long_data = []
-    location_data = LatLong.objects.all() #This object should contain Lat, Long, user.
-    for each in location_data:
-        # print each.user.id
-        lat_long_data.append([float(each.lat), float(each.long), each.user.id])
-    print lat_long_data
-
-    # ------------------------------------------------------------------------------------------------------
+    users_available = []
+    # users_available = {}
+    # # This is where def filter_by_distance is used.
+    # # Location information for each user is retrieved, and placed into an array to be used for sorting.
+    # # ------------------------------------------------------------------------------------------------------
+    #
+    # lat_long_data = []
+    # location_data = LatLong.objects.all()  # This object should contain Lat, Long, user.
+    # for each in location_data:
+    #     # print each.user.id
+    #     lat_long_data.append([float(each.lat), float(each.long), each.user.id])
+    # # print lat_long_data
+    #
+    # # ------------------------------------------------------------------------------------------------------
 
     # context_dict = {}
     if request.POST:
@@ -267,14 +269,18 @@ def add_office_event(request):
 
 
             # context_dict = {"employees": users_available}
-            # return redirect("/add_office_event/")
+    # return redirect("/add_office_event/", {
+    # "users_available": users_available,
+    #     "lat_long_data": lat_long_data})
+
+        return redirect('/add_office_event/', {
+                "users_available": users_available})
+                # "lat_long_data": lat_long_data})
+
     return render(request,
-                  "add_office_event.html",
-                  {"users_available": users_available})
-    # "lat_long_data": lat_long_data}) #This line returns the lat/long list for user selection by distance.
+                      "add_office_event.html")
 
 
-# TODO need help for JS from Kevin.
 @csrf_exempt
 def user_accept_event(request):
     if request.POST:
@@ -328,6 +334,8 @@ def remove_date_by_id(request):
 
 
     # Sends the dates the user is available to the calendar.
+
+
 def dates_clicked(request):
     # Creates a DateAvailable object with a timestamp and id attached.
     days_selected = DateAvailable.objects.filter(employee_available=request.user, is_available=True)
@@ -335,14 +343,10 @@ def dates_clicked(request):
     date_list = []
     cal_date_list = []
     for d in days_selected:
-        # print (str(d))
         date_list.append({"id": d.id, "timestamp": str(d) + "000"})
-        # cal_date_list.append(int(d) + 000)
         cal_date_list.append(str(d) + "000")
     cal_output = "[" + ", ".join(cal_date_list) + "]"
-    # cal_output = "[" + ", ".join(cal_date_list) + "]"
     output = json.dumps(cal_output)
-    # output = json.dumps(cal_date_list)
     print output
     return HttpResponse(output, content_type="application/json")
 
@@ -375,13 +379,14 @@ def incorrect_login(request):
 
 
 # def profile(request):
-#     return render(request,
-#                   "profile.html")
+# return render(request,
+# "profile.html")
 
 
 @login_required
 def profile(request):
     profile = UserProfile.objects.get(user=request.user)
+    # profile = UserProfile.objects.get(user=user)
     print profile.first_name
     first_name = profile.first_name
     last_name = profile.last_name
@@ -428,7 +433,7 @@ def profile(request):
                    "nitrous": nitrous,
                    "restorative": restorative,
                    "license": license,
-                   })
+                  })
 
 
 def contact(request):
