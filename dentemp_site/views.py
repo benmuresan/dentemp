@@ -467,7 +467,7 @@ def office_profile(request):
     # profile.restorative = request.POST.get("anesthesia", False)
 
     return render(request,
-                  'profile.html',
+                  'office_profile.html',
                   {"office_name": office_name,
                    "email": email,
                    "phone_number": phone_number,
