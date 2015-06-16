@@ -238,7 +238,7 @@ def add_office_event(request):
     # lat_long_data = []
     # location_data = LatLong.objects.all()  # This object should contain Lat, Long, user.
     # for each in location_data:
-    #     # print each.user.id
+    # # print each.user.id
     #     lat_long_data.append([float(each.lat), float(each.long), each.user.id])
     # # print lat_long_data
     #
@@ -269,16 +269,16 @@ def add_office_event(request):
 
 
             # context_dict = {"employees": users_available}
-    # return redirect("/add_office_event/", {
-    # "users_available": users_available,
-    #     "lat_long_data": lat_long_data})
+            # return redirect("/add_office_event/", {
+            # "users_available": users_available,
+            #     "lat_long_data": lat_long_data})
 
         return redirect('/add_office_event/', {
-                "users_available": users_available})
-                # "lat_long_data": lat_long_data})
+            "users_available": users_available})
+        # "lat_long_data": lat_long_data})
 
     return render(request,
-                      "add_office_event.html")
+                  "add_office_event.html")
 
 
 @csrf_exempt
@@ -433,6 +433,49 @@ def profile(request):
                    "nitrous": nitrous,
                    "restorative": restorative,
                    "license": license,
+                  })
+
+
+@login_required
+def office_profile(request):
+    profile = OfficeProfile.objects.get(user=request.user)
+    # profile = UserProfile.objects.get(user=user)
+    print profile.office_name
+    office_name = profile.office_name
+    email = profile.email
+    phone_number = profile.phone_number
+    street_address = profile.street_address
+    city = profile.city
+    state = profile.state
+    zip = profile.zip
+    website = profile.website
+
+    # first_name = profile.first_name
+    # profile.first_name = request.POST["first_name"]
+    # profile.last_name = request.POST["last_name"]
+    # profile.last_name = request.POST["last_name"]
+    # profile.license = request.POST["license"]
+    # profile.email = request.POST["email"]
+    # profile.phone_number = request.POST["phone_number"]
+    # profile.street_address = request.POST["street_address"]
+    # profile.city = request.POST["city"]
+    # profile.state = request.POST["state"]
+    # profile.zip = request.POST["zip"]
+    # profile.website = request.POST["website"]
+    # profile.anesthesia = request.POST.get("anesthesia", False)
+    # profile.nitrous = request.POST.get("nitrous", False)
+    # profile.restorative = request.POST.get("anesthesia", False)
+
+    return render(request,
+                  'profile.html',
+                  {"office_name": office_name,
+                   "email": email,
+                   "phone_number": phone_number,
+                   "street_address": street_address,
+                   "city": city,
+                   "state": state,
+                   "zip": zip,
+                   "website": website,
                   })
 
 

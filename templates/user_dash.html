@@ -122,7 +122,7 @@
         }
 
         {#        ---------------------------------------------------------------------------------#}
-        {#        Converts the date to the correct date based on the useres timezone offset.#}
+        {#        Converts the date to the correct date based on the users timezone offset.#}
         var tempDate = new Date();
         var minutes_from_gmt = tempDate.getTimezoneOffset();
         var seconds_in_min = 60;
@@ -134,22 +134,23 @@
         for (var i = 0; i < event_output.length; i++) {
             var da = event_output[i];
             var d = new Date(da.date);
-            console.log(d);
+
             //Turns date to a json string
             var json_strigify = JSON.stringify(d);
-            console.log(json_strigify);
+
             //Turns json string date to a ISO Date
             var dateStr = JSON.parse(json_strigify);
-            console.log(dateStr);
+
             //Turns ISO date to a timestamp
             var date = new Date(dateStr);
             var date_in_milliseconds = date.getTime();
-            console.log(date_in_milliseconds);
-            //Adds the timezone difference to timestamp date
+
+            //Adds the timezone difference to the timestamp date
             var final = date_in_milliseconds + ts_delta;
-            console.log(final);
+
             //Turns timestamp back to a readable date
             var output_date = new Date(final);
+
             addRow({"date": output_date.toLocaleDateString(), "office_name": da.office_name});
         }
         {#        ---------------------------------------------------------------------------------#}

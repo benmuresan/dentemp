@@ -1,0 +1,129 @@
+{% extends "office_user_base.html" %}
+{% load staticfiles %}
+{% block bodyblock %}
+    {#{{ user.first_name }}#}
+    <!-- Main -->
+    <section id="main" class="container">
+        <header>
+            <h2>View and update {{ user.office_name }}'s Profile information</h2>
+        </header>
+        <div class="row">
+            <div class="12u">
+
+
+                <!-- Form -->
+
+                <section class="box">
+
+                    <form method="post" action="#">
+
+                        <div class="row uniform 50%">
+                            <div class="6u 12u(mobilep)">
+                                <input type="text" name="office_name" id="name" value="{{ office_name }}"/>
+                            </div>
+                            <div class="6u 12u(mobilep)">
+                                <input type="text" name="last_name" id="name" value="{{ last_name }}"/>
+                            </div>
+                            <div class="6u 12u(mobilep)">
+                                <input type="text" name="license" id="license" value="{{ license }}"/>
+                            </div>
+                            <div class="6u 12u(mobilep)">
+                                <input type="email" name="email" id="email" value="{{ email }}"/>
+                            </div>
+                            <div class="6u 12u(mobilep)">
+                                <input type="tel" name="phone_number" id="phone_number" value="{{ phone_number }}"/>
+                            </div>
+                        </div>
+                        <hr/>
+                        <div class="row uniform 50%">
+
+                            <div class="6u 12u(mobilep)">
+                                <input type="text" name="street_address" id="street_address"
+                                       value="{{ street_address }}"/>
+                            </div>
+                            <div class="6u 12u(mobilep)">
+                                <input type="text" name="city" id="city" value="{{ city }}"/>
+                            </div>
+
+                            <div class="6u 12u(mobilep)">
+                                <input type="text" name="state" id="state" value="{{ state }}"/>
+                            </div>
+                            <div class="6u 12u(mobilep)">
+                                <input type="text" name="zip" id="zip" value="{{ zip }}"/>
+                            </div>
+                            <div class="6u 12u(mobilep)">
+                                <input type="url" name="website" id="url" value="{{ website }}"
+                                       placeholder="Website Address (If applicable)"/>
+                            </div>
+                            <div style="display: none;" class="6u 12u(mobilep)">
+                                <input type="text" name="lat" id="lat" value=""/>
+                            </div>
+                            <div style="display: none;" class="6u 12u(mobilep)">
+                                <input type="text" name="long" id="long" value=""/>
+                            </div>
+                            <br/>
+                        </div>
+
+                        <hr/>
+
+{#                        <h3>What skills do you have?</h3>#}
+
+{#                        <div class="row uniform 50%">#}
+{#                            <div class="4u 12u(narrower)">#}
+{#                                <input type="checkbox" id="anesthesia" name="anesthesia" value="{{ anesthesia }}">#}
+{#                                <label for="anesthesia">Anesthesia</label>#}
+{#                            </div>#}
+{#                            <div class="4u 12u(narrower)">#}
+{#                                <input type="checkbox" id="nitrous" name="nitrous" value="nitrous">#}
+{#                                <label for="nitrous">Nitrous</label>#}
+{#                            </div>#}
+{#                            <div class="4u 12u(narrower)">#}
+{#                                <input type="checkbox" id="restorative" name="restorative" value="restorative">#}
+{#                                <label for="restorative">Restorative</label>#}
+{#                            </div>#}
+{#                        </div>#}
+                        <hr/>
+                        {% csrf_token %}
+                        <div class="row uniform">
+                            <div class="12u">
+                                <ul class="actions">
+                                    <li><input type="submit" value="Update"/></li>
+                                    {#MAKE THE CANCEL BUTTON REDIRECT TO USER DASH#}
+                                    <li><input type="reset" value="Cancel" class="alt"/></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+
+                    <hr/>
+                </section>
+
+            </div>
+        </div>
+    </section>
+
+    {#    This script changes the lat and long text box above to the correct lat/long of the zip so it can be submited.#}
+    <script>
+        $("#zip").blur(function () {
+            var zipcode = document.getElementById('zip').value;
+            console.log(zipcode);
+            {#    var zipcode = 97024;#}
+
+            $.ajax({
+                url: "http://maps.googleapis.com/maps/api/geocode/json?address=santa+cruz&components=postal_code:" + zipcode + "&sensor=false",
+                method: "POST",
+                success: function (data) {
+                    latitude = data.results[0].geometry.location.lat;
+                    longitude = data.results[0].geometry.location.lng;
+                    {#    alert("Lat = "+latitude+"- Long = "+longitude);#}
+                    $('#lat').val(latitude);
+                    $('#long').val(longitude);
+                    console.log(latitude);
+                    console.log(longitude);
+                }
+            });
+        });
+    </script>
+
+
+{% endblock %}

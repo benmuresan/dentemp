@@ -26,6 +26,7 @@ urlpatterns = patterns('',
                        url(r'^add_office_event/', "dentemp_site.views.add_office_event", name='add_office_event'),
                        url(r'^user_accept_event/', "dentemp_site.views.user_accept_event", name='user_accept_event'),
                        url(r'^dates_clicked/', "dentemp_site.views.dates_clicked", name='dates_clicked'),
+                       url(r'^office_profile/', "dentemp_site.views.office_profile", name='office_profile'),
                        url(r'^', "dentemp_site.views.index", name='index'),
 
 )
