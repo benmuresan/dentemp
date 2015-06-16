@@ -88,7 +88,8 @@ def new_office(request, id):
 
         profile = OfficeProfile.objects.get(user=user)
         profile.office_name = request.POST["office_name"]
-        user.email = request.POST["email"]
+        # user.email = request.POST["email"]
+        profile.email = request.POST["email"]
         profile.phone_number = request.POST["phone_number"]
         profile.street_address = request.POST["street_address"]
         profile.city = request.POST["city"]
